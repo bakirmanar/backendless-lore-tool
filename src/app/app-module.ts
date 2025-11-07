@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
 import { LoreCardComponent } from './components/lore-card/lore-card.component';
-import { FormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 import { MarkdownPipe } from './pipes/markdown.pipe';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { MarkdownPipe } from './pipes/markdown.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

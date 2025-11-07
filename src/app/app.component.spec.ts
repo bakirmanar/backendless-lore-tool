@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot([])
+        RouterModule.forRoot([]),
+        ReactiveFormsModule
       ],
       declarations: [
         AppComponent

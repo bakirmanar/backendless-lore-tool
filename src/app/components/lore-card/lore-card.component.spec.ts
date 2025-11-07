@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoreCardComponent } from './lore-card.component';
 
@@ -8,6 +9,7 @@ describe('LoreCard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
       declarations: [LoreCardComponent]
     })
     .compileComponents();

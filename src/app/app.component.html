@@ -15,11 +15,11 @@
     <div class="grid">
       <div>
         <label>Player Passphrase</label>
-        <input [(ngModel)]="playerPass" type="password" placeholder="set or enter to reveal player content" />
+        <input [formControl]="playerPassControl" type="password" placeholder="set or enter to reveal player content" />
       </div>
       <div>
         <label>GM Passphrase</label>
-        <input [(ngModel)]="gmPass" type="password" placeholder="set or enter to reveal GM content" />
+        <input [formControl]="gmPassControl" type="password" placeholder="set or enter to reveal GM content" />
       </div>
     </div>
   </section>
@@ -27,7 +27,7 @@
 
   <div class="grid">
     @for (card of cards(); track trackId) {
-      <app-lore-card [card]="card" [editing]="editing()" [playerPass]="playerPass" [gmPass]="gmPass"
+      <app-lore-card [card]="card" [editing]="editing()" [playerPass]="playerPassControl.value" [gmPass]="gmPassControl.value"
         (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
     }
   </div>

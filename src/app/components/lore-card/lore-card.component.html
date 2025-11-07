@@ -1,7 +1,7 @@
-<section class="card">
+<section class="card" [formGroup]="form">
   <header>
     <div *ngIf="editing; else viewTitle">
-      <input [(ngModel)]="card.title" placeholder="Section title" />
+      <input formControlName="title" placeholder="Section title" />
     </div>
     <ng-template #viewTitle><div class="title">{{card.title}}</div></ng-template>
   </header>
@@ -26,14 +26,14 @@
 
     <ng-template #editArea>
       <label>Public</label>
-      <textarea [(ngModel)]="card.publicText" rows="4"></textarea>
+      <textarea formControlName="publicText" rows="4"></textarea>
       <div class="muted">Markdown supported: headings, lists, **bold**, *italics*, `code`, [links](https://example.com).</div>
 
       <label>Players‑only (encrypted with Player Passphrase)</label>
-      <textarea [(ngModel)]="playersDraft" rows="4" placeholder="optional"></textarea>
+      <textarea formControlName="playersDraft" rows="4" placeholder="optional"></textarea>
 
       <label>GM‑only (encrypted with GM Passphrase)</label>
-      <textarea [(ngModel)]="gmDraft" rows="4" placeholder="optional"></textarea>
+      <textarea formControlName="gmDraft" rows="4" placeholder="optional"></textarea>
 
       <div class="actions">
         <button (click)="remove.emit(card.id)">🗑️ Delete</button>
@@ -43,3 +43,4 @@
     </ng-template>
   </div>
 </section>
+

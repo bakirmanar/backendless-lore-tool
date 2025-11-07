@@ -1,4 +1,5 @@
 import { Component, computed, signal, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { LoreCard } from './models';
 import { StorageService } from './services'
 
@@ -10,8 +11,8 @@ import { StorageService } from './services'
   // encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  playerPass = '';
-  gmPass = '';
+  playerPassControl = new FormControl<string>('', { nonNullable: true });
+  gmPassControl = new FormControl<string>('', { nonNullable: true });
   private _cards = signal<LoreCard[]>([]);
   cards = computed(() => this._cards());
   editing = signal(false);
