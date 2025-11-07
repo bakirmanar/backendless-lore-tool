@@ -5,11 +5,13 @@ import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
 import { LoreCardComponent } from './components/lore-card/lore-card.component';
 import { FormsModule } from '@angular/forms'
+import { MarkdownPipe } from './pipes/markdown.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoreCardComponent
+    LoreCardComponent,
+    MarkdownPipe
   ],
   imports: [
     BrowserModule,

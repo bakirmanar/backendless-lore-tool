@@ -7,26 +7,27 @@
   </header>
   <div class="content">
     <ng-container *ngIf="!editing; else editArea">
-      <div class="public">{{card.publicText}}</div>
+      <div class="public" [innerHTML]="card.publicText | markdown"></div>
 
       <div *ngIf="card.playersEnc as plr">
         <div class="lock" [class.revealed]="playersRevealed()" (click)="reveal('players')">
           {{ playersRevealed() ? '✅ Players‑only — revealed' : '🔒 Players‑only — click to reveal' }}
         </div>
-        <div *ngIf="playersText() as text">{{ text }}</div>
+        <div *ngIf="playersText() as text" [innerHTML]="text | markdown"></div>
       </div>
 
       <div *ngIf="card.gmEnc as gm">
         <div class="lock" [class.revealed]="gmRevealed()" (click)="reveal('gm')">
           {{ gmRevealed() ? '✅ GM‑only — revealed' : '🔒 GM‑only — click to reveal' }}
         </div>
-        <div *ngIf="gmText() as text">{{ text }}</div>
+        <div *ngIf="gmText() as text" [innerHTML]="text | markdown"></div>
       </div>
     </ng-container>
 
     <ng-template #editArea>
       <label>Public</label>
       <textarea [(ngModel)]="card.publicText" rows="4"></textarea>
+      <div class="muted">Markdown supported: headings, lists, **bold**, *italics*, `code`, [links](https://example.com).</div>
 
       <label>Players‑only (encrypted with Player Passphrase)</label>
       <textarea [(ngModel)]="playersDraft" rows="4" placeholder="optional"></textarea>
