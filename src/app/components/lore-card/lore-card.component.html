@@ -1,0 +1,44 @@
+<section class="card">
+  <header>
+    <div *ngIf="editing; else viewTitle">
+      <input [(ngModel)]="card.title" placeholder="Section title" />
+    </div>
+    <ng-template #viewTitle><div class="title">{{card.title}}</div></ng-template>
+  </header>
+  <div class="content">
+    <ng-container *ngIf="!editing; else editArea">
+      <div class="public">{{card.publicText}}</div>
+
+      <div *ngIf="card.playersEnc as plr">
+        <div class="lock" [class.revealed]="playersRevealed()" (click)="reveal('players')">
+          {{ playersRevealed() ? '✅ Players‑only — revealed' : '🔒 Players‑only — click to reveal' }}
+        </div>
+        <div *ngIf="playersText() as text">{{ text }}</div>
+      </div>
+
+      <div *ngIf="card.gmEnc as gm">
+        <div class="lock" [class.revealed]="gmRevealed()" (click)="reveal('gm')">
+          {{ gmRevealed() ? '✅ GM‑only — revealed' : '🔒 GM‑only — click to reveal' }}
+        </div>
+        <div *ngIf="gmText() as text">{{ text }}</div>
+      </div>
+    </ng-container>
+
+    <ng-template #editArea>
+      <label>Public</label>
+      <textarea [(ngModel)]="card.publicText" rows="4"></textarea>
+
+      <label>Players‑only (encrypted with Player Passphrase)</label>
+      <textarea [(ngModel)]="playersDraft" rows="4" placeholder="optional"></textarea>
+
+      <label>GM‑only (encrypted with GM Passphrase)</label>
+      <textarea [(ngModel)]="gmDraft" rows="4" placeholder="optional"></textarea>
+
+      <div class="actions">
+        <button (click)="remove.emit(card.id)">🗑️ Delete</button>
+        <button (click)="lockAndSave()">🔐 Lock & Save</button>
+      </div>
+      <div class="muted">Locked blocks are stored as ciphertext with random salts/IVs. Change passphrases anytime; re‑save to re‑encrypt.</div>
+    </ng-template>
+  </div>
+</section>

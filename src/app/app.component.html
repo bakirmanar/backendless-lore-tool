@@ -1,0 +1,42 @@
+<div class="wrap">
+  <header>
+    <h1>📜 Lore Sheet <span class="pill">Angular • client‑side encryption • per‑section locks</span></h1>
+    <div class="toolbar">
+      <button (click)="toggleEdit()" [attr.aria-pressed]="editing()">✏️ Author Mode</button>
+      <button (click)="exportJSON()">⬇️ Export JSON</button>
+      <button (click)="importJSON()">⬆️ Import JSON</button>
+      <button (click)="seedDemo()">🌱 Seed Demo</button>
+    </div>
+  </header>
+
+
+  <section class="settings">
+    <p class="muted">Visibility levels: <b>Public</b> (always visible), <b>Players</b> (requires player passphrase), <b>GM</b> (requires GM passphrase). Share the app URL; distribute passphrases separately. Encryption happens in the browser.</p>
+    <div class="grid">
+      <div>
+        <label>Player Passphrase</label>
+        <input [(ngModel)]="playerPass" type="password" placeholder="set or enter to reveal player content" />
+      </div>
+      <div>
+        <label>GM Passphrase</label>
+        <input [(ngModel)]="gmPass" type="password" placeholder="set or enter to reveal GM content" />
+      </div>
+    </div>
+  </section>
+
+
+  <div class="grid">
+    <app-lore-card *ngFor="let c of cards(); trackBy: trackId"
+                   [card]="c" [editing]="editing()" [playerPass]="playerPass" [gmPass]="gmPass"
+                   (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
+  </div>
+
+
+  <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+    <button (click)="addCard()">➕ Add Section</button>
+    <span class="muted">Changes are saved to your browser until you export.</span>
+  </div>
+
+
+  <p class="muted" style="text-align:center;margin-top:18px">Made for worldbuilders. Zero backend. ✨</p>
+</div>

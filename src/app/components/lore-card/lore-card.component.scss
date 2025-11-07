@@ -1,0 +1,81 @@
+.card {
+  background: linear-gradient(180deg, #0f1623, #0c121b);
+  border: 1px solid #263244;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  margin: 8px 0
+}
+
+header {
+  padding: 14px 16px;
+  border-bottom: 1px solid #263244;
+  background: linear-gradient(180deg, #0f1520, #0c1218)
+}
+
+.title {
+  font-weight: 700;
+  font-size: 18px
+}
+
+.content {
+  padding: 14px 16px
+}
+
+.muted {
+  color: #94a3b8
+}
+
+.lock {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 1px dashed #263244;
+  background: #0b1320;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #94a3b8;
+  cursor: pointer;
+  margin: 6px 0
+}
+
+.revealed {
+  border: 1px solid #2f3b52;
+  background: #0c1728;
+  color: #e5e7eb
+}
+
+textarea, input {
+  width: 100%;
+  background: #0a121d;
+  color: #e5e7eb;
+  border: 1px solid #263244;
+  border-radius: 10px;
+  padding: 10px
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap
+}
+
+.row > * {
+  flex: 1
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 10px
+}
+
+button {
+  border: 1px solid #263244;
+  background: linear-gradient(180deg, #1b2330, #151c27);
+  color: #e5e7eb;
+  padding: 8px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600
+}
