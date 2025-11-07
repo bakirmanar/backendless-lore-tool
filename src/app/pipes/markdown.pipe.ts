@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
@@ -16,11 +17,13 @@ marked.setOptions({ gfm: true, breaks: true, renderer });
   standalone: false,
 })
 export class MarkdownPipe implements PipeTransform {
-  transform(src?: string | null): string {
-    if (!src) return '';
+  constructor(private readonly sanitizer: DomSanitizer) {}
+
+  transform(src?: string | null): SafeHtml {
+    if (!src) return this.sanitizer.bypassSecurityTrustHtml('');
     const html = marked.parse(src) as string;
     // Sanitize output. Allow target/rel attributes on anchors.
-    return DOMPurify.sanitize(html, { ADD_ATTR: ['target', 'rel'] }) as string;
+    const clean = DOMPurify.sanitize(html, { ADD_ATTR: ['target', 'rel'] }) as string;
+    return this.sanitizer.bypassSecurityTrustHtml(clean);
   }
 }
-

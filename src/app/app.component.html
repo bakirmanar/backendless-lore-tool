@@ -26,17 +26,19 @@
 
 
   <div class="grid">
-    <app-lore-card *ngFor="let c of cards(); trackBy: trackId"
-                   [card]="c" [editing]="editing()" [playerPass]="playerPass" [gmPass]="gmPass"
-                   (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
+    @for (card of cards(); track trackId) {
+      <app-lore-card [card]="card" [editing]="editing()" [playerPass]="playerPass" [gmPass]="gmPass"
+        (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
+    }
   </div>
 
 
-  <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+  <div class="bottom-actions">
     <button (click)="addCard()">➕ Add Section</button>
     <span class="muted">Changes are saved to your browser until you export.</span>
   </div>
 
 
-  <p class="muted" style="text-align:center;margin-top:18px">Made for worldbuilders. Zero backend. ✨</p>
+  <p class="muted footer-note">Made for worldbuilders. Zero backend. ✨</p>
 </div>
+

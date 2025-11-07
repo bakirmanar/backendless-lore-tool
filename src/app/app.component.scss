@@ -92,3 +92,15 @@ input {
 .muted {
   color: #94a3b8
 }
+
+.bottom-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.footer-note {
+  text-align: center;
+  margin-top: 18px;
+}
