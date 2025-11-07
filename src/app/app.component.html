@@ -11,15 +11,11 @@
 
 
   <section class="settings">
-    <p class="muted">Visibility levels: <b>Public</b> (always visible), <b>Players</b> (requires player passphrase), <b>GM</b> (requires GM passphrase). Share the app URL; distribute passphrases separately. Encryption happens in the browser.</p>
+    <p class="muted">Visibility levels: <b>Public</b> (always visible), <b>DM</b> (requires DM passphrase). Share the app URL; distribute passphrases separately. Encryption happens in the browser.</p>
     <div class="grid">
       <div>
-        <label>Player Passphrase</label>
-        <input [formControl]="playerPassControl" type="password" placeholder="set or enter to reveal player content" />
-      </div>
-      <div>
-        <label>GM Passphrase</label>
-        <input [formControl]="gmPassControl" type="password" placeholder="set or enter to reveal GM content" />
+        <label>DM Passphrase</label>
+        <input [formControl]="gmPassControl" type="password" placeholder="set or enter to reveal DM content" />
       </div>
     </div>
   </section>
@@ -27,7 +23,7 @@
 
   <div class="grid">
     @for (card of cards(); track trackId) {
-      <app-lore-card [card]="card" [editing]="editing()" [playerPass]="playerPassControl.value" [gmPass]="gmPassControl.value"
+      <app-lore-card [card]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
         (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
     }
   </div>
