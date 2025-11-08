@@ -1,6 +1,6 @@
 ﻿import { Component, computed, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LoreCard } from './models';
+import { LoreCard, LoreSectionAccess } from './models';
 import { StorageService } from './services'
 
 @Component({
@@ -11,7 +11,7 @@ import { StorageService } from './services'
   // encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-    gmPassControl = new FormControl<string>('', { nonNullable: true });
+  gmPassControl = new FormControl<string>('', { nonNullable: true });
   private _cards = signal<LoreCard[]>([]);
   cards = computed(() => this._cards());
   editing = signal(false);
@@ -22,17 +22,14 @@ export class AppComponent {
     else this.seedDemo();
   }
 
-  trackId = (_: number, c: LoreCard) => c.id;
-
   toggleEdit() { this.editing.update(v => !v); }
 
   addCard() {
     const card: LoreCard = {
       id: crypto.randomUUID(),
       title: 'New Section',
-      publicText: 'Write public lore here',
-gmEnc: null,
-    };
+      sections: [ { access: LoreSectionAccess.PUBLIC, text: 'Write public lore here' } ],
+    } as any;
     this._cards.update(list => [...list, card]);
     this.persist();
   }
@@ -76,9 +73,13 @@ gmEnc: null,
 
   seedDemo() {
     this._cards.set([
-      { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', publicText: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.', gmEnc: null },
-      { id: crypto.randomUUID(), title: 'Mystic Plane � Travel Notes', publicText: 'Compass spins; paths fold. Following �silver rivers� of energy shortens journeys, but wanderers risk looping back a day older.', gmEnc: null },
-    ]);
+      { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', sections: [
+        { access: LoreSectionAccess.PUBLIC, text: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.' }
+      ] },
+      { id: crypto.randomUUID(), title: 'Mystic Plane - Travel Notes', sections: [
+        { access: LoreSectionAccess.PUBLIC, text: 'Compass spins; paths fold. Following "silver rivers" of energy shortens journeys, but wanderers risk looping back a day older.' }
+      ] },
+    ] as any);
     this.persist();
   }
 }
@@ -92,6 +93,3 @@ gmEnc: null,
 // 4) Run: npm start (or: ng serve) and open http://localhost:4200
 // 5) Share: deploy the built app (ng build --configuration production) to any static host.
 //    Use Export/Import JSON to share snapshots with others; distribute passphrases separately.
-
-
-

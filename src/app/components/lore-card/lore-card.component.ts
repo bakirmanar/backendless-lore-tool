@@ -1,13 +1,19 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoreCard, EncryptedBundle } from '../../models';
+﻿import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoreCard, EncryptedBundle, LoreSection, LoreSectionAccess } from '../../models';
 import { CryptoService } from '../../services';
+
+export type SectionFormGroup = FormGroup<{
+  access: FormControl<LoreSectionAccess>;
+  text: FormControl<string>;
+  enc: FormControl<EncryptedBundle | null>;
+}>;
 
 @Component({
   selector: 'app-lore-card',
   standalone: false,
   templateUrl: './lore-card.component.html',
-  styleUrl: './lore-card.component.scss',
+  styleUrls: ['./lore-card.component.scss'],
 })
 export class LoreCardComponent implements OnChanges {
   @Input() card!: LoreCard;
@@ -16,58 +22,91 @@ export class LoreCardComponent implements OnChanges {
   @Output() update = new EventEmitter<LoreCard>();
   @Output() remove = new EventEmitter<string>();
 
-  form: FormGroup;
-
-  private _gmText = signal<string | null>(null);
+  form: FormGroup<{
+    title: FormControl<string>,
+    sections: FormArray<SectionFormGroup>
+  }>;
+  get sections(): FormArray<SectionFormGroup> { return this.form.controls.sections; }
+  readonly LoreSectionAccess = LoreSectionAccess;
 
   constructor(
-    private readonly cryptoSvc: CryptoService,
-    private readonly fb: FormBuilder,
+    private readonly cryptoService: CryptoService,
+    private readonly formBuilder: FormBuilder,
   ) {
-    this.form = this.fb.group({
-      title: this.fb.control<string>('', { nonNullable: true, validators: [Validators.required] }),
-      publicText: this.fb.control<string>('', { nonNullable: true }),
-      gmDraft: this.fb.control<string>('', { nonNullable: true }),
+    this.form = this.formBuilder.group({
+      title: this.formBuilder.control<string>('', { nonNullable: true, validators: [Validators.required] }),
+      sections: this.formBuilder.array<SectionFormGroup>([]),
     });
   }
 
-  gmRevealed = () => this._gmText() !== null;
-  gmText = () => this._gmText();
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['card'] && this.card) {
-      this.form.patchValue({
-        title: this.card.title ?? '',
-        publicText: this.card.publicText ?? '',
-        gmDraft: '',
-      }, { emitEvent: false });
-    }
-  }
-
-  async reveal(kind: 'gm') {
-    try {
-      if (kind === 'gm' && this.card.gmEnc) {
-        if (!this.gmPass) { alert('Enter GM Passphrase at the top.'); return; }
-        const text = await this.cryptoSvc.decrypt(this.gmPass, this.card.gmEnc);
-        this._gmText.set(text);
+      this.form.patchValue({ title: this.card.title ?? '' }, { emitEvent: false });
+      this.sections.clear();
+      for (const s of this.card.sections) {
+        if (s.access === LoreSectionAccess.PUBLIC) {
+          this.sections.push(this.formBuilder.group({
+            access: this.formBuilder.control<LoreSectionAccess>(LoreSectionAccess.PUBLIC, { nonNullable: true }),
+            text: this.formBuilder.control<string>(s.text, { nonNullable: true }),
+            enc: this.formBuilder.control<EncryptedBundle | null>(null),
+          }) as SectionFormGroup);
+        } else {
+          this.sections.push(this.formBuilder.group({
+            access: this.formBuilder.control<LoreSectionAccess>(LoreSectionAccess.PRIVATE, { nonNullable: true }),
+            text: this.formBuilder.control<string>('', { nonNullable: true }),
+            enc: this.formBuilder.control<EncryptedBundle | null>(s.enc),
+          }) as SectionFormGroup);
+        }
       }
-    } catch {
-      alert('Wrong passphrase.');
+      if (this.gmPass) this.decryptAllPrivate();
     }
+    if (changes['gmPass'] && this.gmPass) this.decryptAllPrivate();
   }
 
   async lockAndSave() {
-    const { title, publicText, gmDraft } = this.form.getRawValue() as { title: string; publicText: string; gmDraft: string; };
-    const card = { ...this.card, title, publicText } as LoreCard;
-    // Encrypt drafts if provided
-    if (gmDraft.trim()) {
-      if (!this.gmPass) { alert('Set GM Passphrase at the top first.'); return; }
-      const bundle = await this.cryptoSvc.encrypt(this.gmPass, gmDraft.trim());
-      (bundle as EncryptedBundle)._preview = gmDraft.slice(0, 40) + (gmDraft.length > 40 ? '�?�' : '');
-      card.gmEnc = bundle;
-    } else card.gmEnc = null;
+    const raw = this.form.getRawValue();
+    const out: LoreSection[] = [];
+    for (const s of raw.sections) {
+      if (s.access === LoreSectionAccess.PUBLIC) {
+        out.push({ access: LoreSectionAccess.PUBLIC, text: s.text || '' });
+      } else {
+        const text = (s.text || '').trim();
+        if (!text && s.enc) { out.push({ access: LoreSectionAccess.PRIVATE, enc: s.enc }); continue; }
+        if (!text) continue;
+        if (!this.gmPass) { alert('Set DM Passphrase at the top first.'); return; }
+        const bundle = await this.cryptoService.encrypt(this.gmPass, text);
+        (bundle as EncryptedBundle)._preview = text.slice(0, 40) + (text.length > 40 ? '…' : '');
+        out.push({ access: LoreSectionAccess.PRIVATE, enc: bundle });
+      }
+    }
+    const next: LoreCard = { id: this.card.id, title: raw.title, sections: out };
+    this.update.emit(next);
+  }
 
-    this.update.emit(card);
+  addSection(access: LoreSectionAccess = LoreSectionAccess.PUBLIC) {
+    this.sections.push(this.formBuilder.group({
+      access: this.formBuilder.control<LoreSectionAccess>(access, { nonNullable: true }),
+      text: this.formBuilder.control<string>('', { nonNullable: true }),
+      enc: this.formBuilder.control<EncryptedBundle | null>(null),
+    }) as SectionFormGroup);
+  }
+
+  removeSection(i: number) { this.sections.removeAt(i); }
+
+  async decryptAllPrivate() {
+    for (const grp of this.sections.controls) {
+      const access = grp.controls.access.value as LoreSectionAccess;
+      if (access === LoreSectionAccess.PRIVATE) {
+        const enc = grp.controls.enc.value as EncryptedBundle | null;
+        if (enc && this.gmPass) {
+          try {
+            const text = await this.cryptoService.decrypt(this.gmPass, enc);
+            grp.controls.text.setValue(text, { emitEvent: false });
+          } catch {}
+        }
+      }
+    }
   }
 }
+
 

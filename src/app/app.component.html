@@ -1,11 +1,11 @@
-<div class="wrap">
+﻿<div class="wrap">
   <header>
-    <h1>📜 Lore Sheet <span class="pill">Angular • client‑side encryption • per‑section locks</span></h1>
+    <h1>&#128220; Lore Sheet <span class="pill">Angular &bull; client-side encryption &bull; per-section locks</span></h1>
     <div class="toolbar">
-      <button (click)="toggleEdit()" [attr.aria-pressed]="editing()">✏️ Author Mode</button>
-      <button (click)="exportJSON()">⬇️ Export JSON</button>
-      <button (click)="importJSON()">⬆️ Import JSON</button>
-      <button (click)="seedDemo()">🌱 Seed Demo</button>
+      <button (click)="toggleEdit()" [attr.aria-pressed]="editing()">&#9999;️ Author Mode</button>
+      <button (click)="exportJSON()">&#10515; Export JSON</button>
+      <button (click)="importJSON()">&#10502; Import JSON</button>
+      <button (click)="seedDemo()">&#127793; Seed Demo</button>
     </div>
   </header>
 
@@ -22,7 +22,7 @@
 
 
   <div class="grid">
-    @for (card of cards(); track trackId) {
+    @for (card of cards(); track card.id) {
       <app-lore-card [card]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
         (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
     }
@@ -30,11 +30,12 @@
 
 
   <div class="bottom-actions">
-    <button (click)="addCard()">➕ Add Section</button>
+    <button (click)="addCard()">Add Card</button>
     <span class="muted">Changes are saved to your browser until you export.</span>
   </div>
 
 
-  <p class="muted footer-note">Made for worldbuilders. Zero backend. ✨</p>
+  <p class="muted footer-note">Made for worldbuilders. Zero backend. &#10024;</p>
 </div>
+
 

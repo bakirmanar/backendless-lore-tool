@@ -1,36 +1,52 @@
-<section class="card" [formGroup]="form">
+﻿<section class="card" [formGroup]="form">
   <header>
-    <div *ngIf="editing; else viewTitle">
-      <input formControlName="title" placeholder="Section title" />
-    </div>
-    <ng-template #viewTitle><div class="title">{{card.title}}</div></ng-template>
+    @if (editing) {
+      <div>
+        <input formControlName="title" placeholder="Section title" />
+      </div>
+    } @else {
+      <div class="title">{{ card.title }}</div>
+    }
   </header>
   <div class="content">
-    <ng-container *ngIf="!editing; else editArea">
-      <div class="public" [innerHTML]="card.publicText | markdown"></div>
-
-      <div *ngIf="card.gmEnc as gm">
-        <div class="lock" [class.revealed]="gmRevealed()" (click)="reveal('gm')">
-          {{ gmRevealed() ? 'DM-only revealed' : 'DM-only — click to reveal' }}
-        </div>
-        <div *ngIf="gmText() as text" [innerHTML]="text | markdown"></div>
-      </div>
-    </ng-container>
-
-    <ng-template #editArea>
-      <label>Public</label>
-      <textarea formControlName="publicText" rows="4"></textarea>
+    @if (!editing) {
+      @for (sec of sections.controls; track $index; let i = $index) {
+        @switch (sec.controls.access.value) {
+          @case (LoreSectionAccess.PUBLIC) {
+            <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
+          }
+          @case (LoreSectionAccess.PRIVATE) {
+            @if (gmPass) {
+              <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
+            }
+          }
+        }
+      }
+    } @else {
       <div class="muted">Markdown supported: headings, lists, **bold**, *italics*, `code`, [links](https://example.com).</div>
-
-      <label>DM-only (encrypted with DM Passphrase)</label>
-      <textarea formControlName="gmDraft" rows="4" placeholder="optional"></textarea>
-
-      <div class="actions">
-        <button (click)="remove.emit(card.id)">Delete</button>
-        <button (click)="lockAndSave()">Lock & Save</button>
+      @for (sec of sections.controls; track $index; let i = $index) {
+        <div class="section-edit">
+          <label>Visibility</label>
+          <select [formControl]="sec.controls.access">
+            <option [ngValue]="LoreSectionAccess.PUBLIC">Public</option>
+            <option [ngValue]="LoreSectionAccess.PRIVATE">Private (DM)</option>
+          </select>
+          <label>Content</label>
+          <textarea [formControl]="sec.controls.text" rows="4" placeholder="Markdown content"></textarea>
+          <button type="button" (click)="removeSection(i)">Remove Section</button>
+        </div>
+      }
+      <div class="actions more-actions">
+        <button type="button" (click)="addSection(LoreSectionAccess.PUBLIC)">Add Public Section</button>
+        <button type="button" (click)="addSection(LoreSectionAccess.PRIVATE)">Add DM Section</button>
       </div>
-      <div class="muted">Locked blocks are stored as ciphertext with random salts/IVs. Change passphrase anytime; re-save to re-encrypt.</div>
-    </ng-template>
+      <div class="actions">
+        <button type="button" (click)="remove.emit(card.id)">Delete Card</button>
+        <button type="button" (click)="lockAndSave()">Save</button>
+      </div>
+    }
   </div>
 </section>
+
+
 

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoreCardComponent } from './lore-card.component';
+import { LoreSectionAccess } from '../../models';
 
 describe('LoreCard', () => {
   let component: LoreCardComponent;
@@ -16,6 +17,7 @@ describe('LoreCard', () => {
 
     fixture = TestBed.createComponent(LoreCardComponent);
     component = fixture.componentInstance;
+    component.card = { id: '1', title: 'Sample', sections: [{ access: LoreSectionAccess.PUBLIC, text: 'hello' }] } as any;
     fixture.detectChanges();
   });
 
