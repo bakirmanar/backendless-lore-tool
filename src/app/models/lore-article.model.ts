@@ -9,8 +9,9 @@ export type LoreSection =
   | { access: LoreSectionAccess.PUBLIC; text: string }
   | { access: LoreSectionAccess.PRIVATE; enc: EncryptedBundle };
 
-export interface LoreCard {
+export interface LoreArticle {
   id: string;
   title: string;
   sections: LoreSection[];
 }
+

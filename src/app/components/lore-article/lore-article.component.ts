@@ -1,6 +1,6 @@
-﻿import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoreCard, EncryptedBundle, LoreSection, LoreSectionAccess } from '../../models';
+import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess } from '../../models';
 import { CryptoService } from '../../services';
 
 export type SectionFormGroup = FormGroup<{
@@ -10,16 +10,16 @@ export type SectionFormGroup = FormGroup<{
 }>;
 
 @Component({
-  selector: 'app-lore-card',
+  selector: 'app-lore-article',
   standalone: false,
-  templateUrl: './lore-card.component.html',
-  styleUrls: ['./lore-card.component.scss'],
+  templateUrl: './lore-article.component.html',
+  styleUrls: ['./lore-article.component.scss'],
 })
-export class LoreCardComponent implements OnChanges {
-  @Input() card!: LoreCard;
+export class LoreArticleComponent implements OnChanges {
+  @Input() article!: LoreArticle;
   @Input() editing = false;
   @Input() gmPass = '';
-  @Output() update = new EventEmitter<LoreCard>();
+  @Output() update = new EventEmitter<LoreArticle>();
   @Output() remove = new EventEmitter<string>();
 
   form: FormGroup<{
@@ -40,10 +40,10 @@ export class LoreCardComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['card'] && this.card) {
-      this.form.patchValue({ title: this.card.title ?? '' }, { emitEvent: false });
+    if (changes['article'] && this.article) {
+      this.form.patchValue({ title: this.article.title ?? '' }, { emitEvent: false });
       this.sections.clear();
-      for (const s of this.card.sections) {
+      for (const s of this.article.sections) {
         if (s.access === LoreSectionAccess.PUBLIC) {
           this.sections.push(this.formBuilder.group({
             access: this.formBuilder.control<LoreSectionAccess>(LoreSectionAccess.PUBLIC, { nonNullable: true }),
@@ -75,11 +75,11 @@ export class LoreCardComponent implements OnChanges {
         if (!text) continue;
         if (!this.gmPass) { alert('Set DM Passphrase at the top first.'); return; }
         const bundle = await this.cryptoService.encrypt(this.gmPass, text);
-        (bundle as EncryptedBundle)._preview = text.slice(0, 40) + (text.length > 40 ? '…' : '');
+        (bundle as EncryptedBundle)._preview = text.slice(0, 40) + (text.length > 40 ? '.' : '');
         out.push({ access: LoreSectionAccess.PRIVATE, enc: bundle });
       }
     }
-    const next: LoreCard = { id: this.card.id, title: raw.title, sections: out };
+    const next: LoreArticle = { id: this.article.id, title: raw.title, sections: out };
     this.update.emit(next);
   }
 
@@ -108,5 +108,4 @@ export class LoreCardComponent implements OnChanges {
     }
   }
 }
-
 

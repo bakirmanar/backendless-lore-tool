@@ -5,7 +5,7 @@
         <input formControlName="title" placeholder="Section title" />
       </div>
     } @else {
-      <div class="title">{{ card.title }}</div>
+      <div class="title">{{ article.title }}</div>
     }
   </header>
   <div class="content">
@@ -41,12 +41,13 @@
         <button type="button" (click)="addSection(LoreSectionAccess.PRIVATE)">Add DM Section</button>
       </div>
       <div class="actions">
-        <button type="button" (click)="remove.emit(card.id)">Delete Card</button>
+        <button type="button" (click)="remove.emit(article.id)">Delete Card</button>
         <button type="button" (click)="lockAndSave()">Save</button>
       </div>
     }
   </div>
 </section>
+
 
 
 

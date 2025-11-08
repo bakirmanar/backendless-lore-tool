@@ -1,16 +1,16 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
-import { LoreCardComponent } from './components/lore-card/lore-card.component';
+import { LoreArticleComponent } from './components/lore-article/lore-article.component';
 import { ReactiveFormsModule } from '@angular/forms'
 import { MarkdownPipe } from './pipes/markdown.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoreCardComponent,
+    LoreArticleComponent,
     MarkdownPipe
   ],
   imports: [
@@ -24,3 +24,4 @@ import { MarkdownPipe } from './pipes/markdown.pipe';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

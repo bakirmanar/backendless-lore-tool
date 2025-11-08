@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LoreCard, LoreSection, LoreSectionAccess } from '../models';
+import { LoreArticle, LoreSection, LoreSectionAccess } from '../models';
 
 const KEY = 'loreSheetData';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
-  save(cards: LoreCard[]) { localStorage.setItem(KEY, JSON.stringify(cards)); }
-  load(): LoreCard[] | null {
+  save(articles: LoreArticle[]) { localStorage.setItem(KEY, JSON.stringify(articles)); }
+  load(): LoreArticle[] | null {
     const raw = localStorage.getItem(KEY);
     if (!raw) return null;
     try {
@@ -27,7 +27,7 @@ export class StorageService {
             }
             return s as LoreSection;
           });
-          return { id: c.id, title: c.title, sections } as LoreCard;
+          return { id: c.id, title: c.title, sections } as LoreArticle;
         }
         const sections: LoreSection[] = [];
         if (typeof c.publicText === 'string') sections.push({ access: LoreSectionAccess.PUBLIC, text: c.publicText });
@@ -36,7 +36,7 @@ export class StorageService {
           id: c.id,
           title: c.title,
           sections,
-        } as LoreCard;
+        } as LoreArticle;
       });
     } catch {
       return null;

@@ -1,2 +1,2 @@
 export * from './incrypted-bundle.model';
-export * from './lore-card.model';
+export * from './lore-article.model';

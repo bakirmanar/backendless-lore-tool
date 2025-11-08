@@ -22,20 +22,22 @@
 
 
   <div class="grid">
-    @for (card of cards(); track card.id) {
-      <app-lore-card [card]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
-        (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-card>
+    @for (card of articles(); track card.id) {
+      <app-lore-article [article]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
+        (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-article>
     }
   </div>
 
 
   <div class="bottom-actions">
-    <button (click)="addCard()">Add Card</button>
+    <button (click)="addArticle()">Add Article</button>
     <span class="muted">Changes are saved to your browser until you export.</span>
   </div>
 
 
   <p class="muted footer-note">Made for worldbuilders. Zero backend. &#10024;</p>
 </div>
+
+
 
 
