@@ -1,11 +1,20 @@
 # Repository Guidelines
 
+## Project Context for Agents
+- Angular 20 lore manager with articles. Articles consist of sections.
+- All data should be exportable and importable in a single file (state)
+- Articles and sections can have PUBLIC or PRIVATE access. 
+- PRIVATE data should be encrypted on export with a user provided password.
+- On import if user provided correct password PRIVATE date should be decrypted and rendered
+
 ## Project Structure & Module Organization
 - Source code lives in `src/app` with feature folders: `components/`, `services/`, `models/`.
 - Tests sit next to sources as `*.spec.ts` (e.g., `lore-card.component.spec.ts`).
 - App shell and globals: `src/main.ts`, `src/styles.css`, `src/index.html`.
 - Static assets: `public/` (e.g., `public/favicon.ico`).
 - Angular workspace config: `angular.json`; TypeScript configs: `tsconfig*.json`.
+- Use Angular 20 features
+- Use full names for injections (e.g. `private readonly cryptoService: CryptoService,`)
 
 ## Build, Test, and Development Commands
 - `npm start` — Run dev server at localhost with HMR.
