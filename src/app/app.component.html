@@ -25,6 +25,11 @@
     @for (card of articles(); track card.id) {
       <app-lore-article [article]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
         (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-article>
+      @if (gmPassControl.value) {
+        <div class="actions">
+          <a [routerLink]="['/edit', card.id]">Edit</a>
+        </div>
+      }
     }
   </div>
 
@@ -38,6 +43,11 @@
   <p class="muted footer-note">Made for worldbuilders. Zero backend. &#10024;</p>
 </div>
 
+
+
+
+
+<router-outlet></router-outlet>
 
 
 

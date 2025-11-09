@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess } from '../../models';
-import { CryptoService } from '../../services';
+import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess } from '@app/models';
+import { CryptoService } from '@app/services';
 
 export type SectionFormGroup = FormGroup<{
   access: FormControl<LoreSectionAccess>;
@@ -108,4 +108,3 @@ export class LoreArticleComponent implements OnChanges {
     }
   }
 }
-

@@ -2,7 +2,7 @@
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoreArticleComponent } from './lore-article.component';
-import { LoreSectionAccess } from '../../models';
+import { LoreSectionAccess } from '@app/models';
 
 describe('LoreArticle', () => {
   let component: LoreArticleComponent;

@@ -1,7 +1,7 @@
-﻿import { Component, computed, signal, ViewEncapsulation } from '@angular/core';
+import { Component, Signal, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { LoreArticle, LoreSectionAccess } from './models';
-import { StorageService } from './services'
+import { StateService } from './services'
 
 @Component({
   selector: 'app-root',
@@ -12,14 +12,10 @@ import { StorageService } from './services'
 })
 export class AppComponent {
   gmPassControl = new FormControl<string>('', { nonNullable: true });
-  private _articles = signal<LoreArticle[]>([]);
-  articles = computed(() => this._articles());
+  articles: Signal<LoreArticle[]> ;
   editing = signal(false);
-
-  constructor(private store: StorageService) {
-    const saved = this.store.load();
-    if (saved) this._articles.set(saved);
-    else this.seedDemo();
+  constructor(private readonly state: StateService) {
+    this.articles = this.state.articles;
   }
 
   toggleEdit() { this.editing.update(v => !v); }
@@ -30,25 +26,20 @@ export class AppComponent {
       title: 'New Section',
       sections: [ { access: LoreSectionAccess.PUBLIC, text: 'Write public lore here' } ],
     } as any;
-    this._articles.update(list => [...list, article]);
-    this.persist();
+    this.state.addArticle(article);
   }
 
-  onUpdate(updated: LoreArticle) {
-    this._articles.update(list => list.map(c => c.id === updated.id ? updated : c));
-    this.persist();
-  }
+  onUpdate(updated: LoreArticle) { this.state.updateArticle(updated); }
 
   onRemove(id: string) {
     if (!confirm('Delete this section?')) return;
-    this._articles.update(list => list.filter(c => c.id !== id));
-    this.persist();
+    this.state.removeArticle(id);
   }
 
-  persist() { this.store.save(this._articles()); }
+  persist() { /* state persists on change */ }
 
   exportJSON() {
-    const blob = new Blob([JSON.stringify(this._articles(), null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(this.articles(), null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url; a.download = 'lore-sheet.json'; a.click();
@@ -64,7 +55,7 @@ export class AppComponent {
         try {
           const data = JSON.parse(txt) as LoreArticle[];
           if (!Array.isArray(data)) throw new Error('Bad file');
-          this._articles.set(data); this.persist();
+          this.state.setArticles(data); this.persist();
         } catch { alert('Invalid JSON snapshot.'); }
       });
     };
@@ -72,7 +63,7 @@ export class AppComponent {
   }
 
   seedDemo() {
-    this._articles.set([
+    this.state.setArticles([
       { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', sections: [
         { access: LoreSectionAccess.PUBLIC, text: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.' }
       ] },
@@ -93,3 +84,7 @@ export class AppComponent {
 // 4) Run: npm start (or: ng serve) and open http://localhost:4200
 // 5) Share: deploy the built app (ng build --configuration production) to any static host.
 //    Use Export/Import JSON to share snapshots with others; distribute passphrases separately.
+
+
+
+

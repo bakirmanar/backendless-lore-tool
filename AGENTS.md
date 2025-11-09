@@ -8,12 +8,12 @@
 - On import if user provided correct password PRIVATE date should be decrypted and rendered
 
 ## Project Structure & Module Organization
-- Source code lives in `src/app` with feature folders: `components/`, `services/`, `models/`.
-- Tests sit next to sources as `*.spec.ts` (e.g., `lore-card.component.spec.ts`).
+- Source code lives in `src/app` with feature folders: `components/`, `services/`, `models/`, etc.
+- Tests sit next to sources as `*.spec.ts` (e.g., `app.component.spec.ts`).
 - App shell and globals: `src/main.ts`, `src/styles.css`, `src/index.html`.
 - Static assets: `public/` (e.g., `public/favicon.ico`).
 - Angular workspace config: `angular.json`; TypeScript configs: `tsconfig*.json`.
-- Use Angular 20 features
+- Angular version is 20. Follow official Angular 20 guidelines
 - Use full names for injections (e.g. `private readonly cryptoService: CryptoService,`)
 
 ## Build, Test, and Development Commands
@@ -28,6 +28,8 @@
 - File names: kebab‑case (e.g., `lore-card.component.ts`).
 - Classes/Components/Services: PascalCase (e.g., `LoreCardComponent`, `CryptoService`).
 - Re‑export barrel files allowed in `index.ts` within folders.
+- Dont use `any` type.
+- Create types for all business related instances, enumerations.
 - Run Prettier before commits (configure your editor to format on save).
 
 ## Testing Guidelines
@@ -45,3 +47,4 @@
 ## Architecture Notes
 - Angular app using services for storage and crypto (`storage.service.ts`, `crypto.service.ts`) and a `lore-card` component.
 - Avoid renaming core files without discussion; keep routing/module filenames consistent with current project patterns.
+ - Use `@app/*` TS path aliases for imports (e.g., `@app/components`, `@app/services`, `@app/models`, `@app/pipes`) and add new `@app/<layer>` aliases when introducing new layers.

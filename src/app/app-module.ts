@@ -3,14 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
-import { LoreArticleComponent } from './components/lore-article/lore-article.component';
+import { LoreArticleComponent, LoreArticleEditorComponent } from '@app/components';
 import { ReactiveFormsModule } from '@angular/forms'
-import { MarkdownPipe } from './pipes/markdown.pipe';
+import { MarkdownPipe } from '@app/pipes';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoreArticleComponent,
+    LoreArticleEditorComponent,
     MarkdownPipe
   ],
   imports: [
@@ -24,4 +25,3 @@ import { MarkdownPipe } from './pipes/markdown.pipe';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

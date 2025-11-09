@@ -1,0 +1,20 @@
+<section class="editor-overlay">
+  <header class="editor-header">
+    <button type="button" (click)="back()">&#8592; Back</button>
+    <div class="spacer"></div>
+    <label>DM Passphrase</label>
+    <input [formControl]="dmPass" type="password" placeholder="enter to enable editing" />
+  </header>
+
+  <div class="editor-body" *ngIf="article; else notFound">
+    <app-lore-article [article]="article"
+                      [editing]="!!dmPass.value"
+                      [gmPass]="dmPass.value"
+                      (update)="onUpdate($event)"></app-lore-article>
+  </div>
+
+  <ng-template #notFound>
+    <div class="muted">Article not found.</div>
+  </ng-template>
+</section>
+

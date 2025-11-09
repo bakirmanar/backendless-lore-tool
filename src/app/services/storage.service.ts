@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoreArticle, LoreSection, LoreSectionAccess } from '../models';
+import { LoreArticle, LoreSection, LoreSectionAccess } from '@app/models';
 
 const KEY = 'loreSheetData';
 
