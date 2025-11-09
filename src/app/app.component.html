@@ -1,4 +1,5 @@
 ﻿<div class="wrap">
+  <app-header></app-header>
   <header>
     <h1>&#128220; Lore Sheet <span class="pill">Angular &bull; client-side encryption &bull; per-section locks</span></h1>
     <div class="toolbar">
@@ -9,30 +10,12 @@
     </div>
   </header>
 
-
-  <section class="settings">
-    <p class="muted">Visibility levels: <b>Public</b> (always visible), <b>DM</b> (requires DM passphrase). Share the app URL; distribute passphrases separately. Encryption happens in the browser.</p>
-    <div class="grid">
-      <div>
-        <label>DM Passphrase</label>
-        <input [formControl]="gmPassControl" type="password" placeholder="set or enter to reveal DM content" />
-      </div>
-    </div>
-  </section>
-
-
   <div class="grid">
     @for (card of articles(); track card.id) {
-      <app-lore-article [article]="card" [editing]="editing()" [gmPass]="gmPassControl.value"
+      <app-lore-article [article]="card" [editing]="editing()"
         (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-article>
-      @if (gmPassControl.value) {
-        <div class="actions">
-          <a [routerLink]="['/edit', card.id]">Edit</a>
-        </div>
-      }
     }
   </div>
-
 
   <div class="bottom-actions">
     <button (click)="addArticle()">Add Article</button>

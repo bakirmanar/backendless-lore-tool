@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { LoreArticle } from '@app/models';
-import { StateService } from '@app/services';
+import { KeyCacheService, StateService } from '@app/services';
 
 @Component({
   selector: 'app-lore-article-editor',
@@ -12,7 +12,7 @@ import { StateService } from '@app/services';
 })
 export class LoreArticleEditorComponent implements OnInit {
   article: LoreArticle | null = null;
-  dmPass = new FormControl<string>('', { nonNullable: true });
+  readonly hasKey: Signal<boolean> = inject(KeyCacheService).hasKey;
 
   constructor(
     private readonly route: ActivatedRoute,

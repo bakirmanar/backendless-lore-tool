@@ -1,5 +1,4 @@
 import { Component, Signal, signal, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { LoreArticle, LoreSectionAccess } from './models';
 import { StateService } from './services'
 
@@ -11,7 +10,6 @@ import { StateService } from './services'
   // encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  gmPassControl = new FormControl<string>('', { nonNullable: true });
   articles: Signal<LoreArticle[]> ;
   editing = signal(false);
   constructor(private readonly state: StateService) {

@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button aria-label="Set passphrase" *ngIf="!hasKey()" (click)="openPassphraseDialog()">
+    <mat-icon>vpn_key</mat-icon>
+  </button>
+  <button mat-icon-button aria-label="Clear passphrase" *ngIf="hasKey()" (click)="clearPassphrase()">
+    <mat-icon>logout</mat-icon>
+  </button>
+  <span class="spacer"></span>
+  <span class="brand">Lore Tool</span>
+</mat-toolbar>
+

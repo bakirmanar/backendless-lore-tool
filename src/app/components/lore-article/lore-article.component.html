@@ -16,7 +16,7 @@
             <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
           }
           @case (LoreSectionAccess.PRIVATE) {
-            @if (gmPass) {
+            @if (hasKey()) {
               <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
             }
           }

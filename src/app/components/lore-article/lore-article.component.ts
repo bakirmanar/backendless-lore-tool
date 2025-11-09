@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, inject, Signal, effect } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess } from '@app/models';
-import { CryptoService } from '@app/services';
+import { CryptoService, KeyCacheService } from '@app/services';
 
 export type SectionFormGroup = FormGroup<{
   access: FormControl<LoreSectionAccess>;
@@ -18,7 +18,6 @@ export type SectionFormGroup = FormGroup<{
 export class LoreArticleComponent implements OnChanges {
   @Input() article!: LoreArticle;
   @Input() editing = false;
-  @Input() gmPass = '';
   @Output() update = new EventEmitter<LoreArticle>();
   @Output() remove = new EventEmitter<string>();
 
@@ -28,11 +27,15 @@ export class LoreArticleComponent implements OnChanges {
   }>;
   get sections(): FormArray<SectionFormGroup> { return this.form.controls.sections; }
   readonly LoreSectionAccess = LoreSectionAccess;
+  readonly hasKey: Signal<boolean>;
 
   constructor(
     private readonly cryptoService: CryptoService,
     private readonly formBuilder: FormBuilder,
   ) {
+    const keyCache = inject(KeyCacheService);
+    this.hasKey = keyCache.hasKey;
+    effect(() => { if (this.hasKey()) { this.decryptAllPrivate(); } });
     this.form = this.formBuilder.group({
       title: this.formBuilder.control<string>('', { nonNullable: true, validators: [Validators.required] }),
       sections: this.formBuilder.array<SectionFormGroup>([]),
@@ -58,9 +61,8 @@ export class LoreArticleComponent implements OnChanges {
           }) as SectionFormGroup);
         }
       }
-      if (this.gmPass) this.decryptAllPrivate();
+      if (this.hasKey()) this.decryptAllPrivate();
     }
-    if (changes['gmPass'] && this.gmPass) this.decryptAllPrivate();
   }
 
   async lockAndSave() {
@@ -73,8 +75,8 @@ export class LoreArticleComponent implements OnChanges {
         const text = (s.text || '').trim();
         if (!text && s.enc) { out.push({ access: LoreSectionAccess.PRIVATE, enc: s.enc }); continue; }
         if (!text) continue;
-        if (!this.gmPass) { alert('Set DM Passphrase at the top first.'); return; }
-        const bundle = await this.cryptoService.encrypt(this.gmPass, text);
+        if (!this.hasKey()) { alert('Set DM Passphrase in the header first.'); return; }
+        const bundle = await this.cryptoService.encrypt('', text);
         (bundle as EncryptedBundle)._preview = text.slice(0, 40) + (text.length > 40 ? '.' : '');
         out.push({ access: LoreSectionAccess.PRIVATE, enc: bundle });
       }
@@ -98,9 +100,9 @@ export class LoreArticleComponent implements OnChanges {
       const access = grp.controls.access.value as LoreSectionAccess;
       if (access === LoreSectionAccess.PRIVATE) {
         const enc = grp.controls.enc.value as EncryptedBundle | null;
-        if (enc && this.gmPass) {
+        if (enc && this.hasKey()) {
           try {
-            const text = await this.cryptoService.decrypt(this.gmPass, enc);
+            const text = await this.cryptoService.decrypt('', enc);
             grp.controls.text.setValue(text, { emitEvent: false });
           } catch {}
         }
