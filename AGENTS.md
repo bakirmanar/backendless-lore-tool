@@ -14,6 +14,7 @@
 - Static assets: `public/` (e.g., `public/favicon.ico`).
 - Angular workspace config: `angular.json`; TypeScript configs: `tsconfig*.json`.
 - Angular version is 20. Follow official Angular 20 guidelines
+- Use angular material v20+
 - Use full names for injections (e.g. `private readonly cryptoService: CryptoService,`)
 
 ## Build, Test, and Development Commands
@@ -47,4 +48,4 @@
 ## Architecture Notes
 - Angular app using services for storage and crypto (`storage.service.ts`, `crypto.service.ts`) and a `lore-card` component.
 - Avoid renaming core files without discussion; keep routing/module filenames consistent with current project patterns.
- - Use `@app/*` TS path aliases for imports (e.g., `@app/components`, `@app/services`, `@app/models`, `@app/pipes`) and add new `@app/<layer>` aliases when introducing new layers.
+- Use `@app/*` TS path aliases for imports (e.g., `@app/components`, `@app/services`, `@app/models`, `@app/pipes`) and add new `@app/<layer>` aliases when introducing new layers.
