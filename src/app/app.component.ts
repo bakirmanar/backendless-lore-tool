@@ -1,6 +1,11 @@
-import { Component, Signal, signal, ViewEncapsulation } from '@angular/core';
-import { LoreArticle, LoreSectionAccess } from './models';
+import { Component, Signal, computed, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { LoreArticle, ArticleType } from './models';
 import { StateService } from './services'
+import { KeyCacheService } from './services/key-cache.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,31 +15,36 @@ import { StateService } from './services'
   // encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  articles: Signal<LoreArticle[]> ;
-  editing = signal(false);
-  constructor(private readonly state: StateService) {
+  readonly articles: Signal<LoreArticle[]>;
+  readonly hasKey: Signal<boolean>;
+  // Filters
+  readonly search = new FormControl<string>('', { nonNullable: true });
+  readonly typeFilter = new FormControl<ArticleType | null>(null);
+  readonly ArticleType = ArticleType;
+  readonly filtered: Signal<LoreArticle[]>;
+  private readonly searchValue = toSignal(this.search.valueChanges.pipe(startWith(this.search.value)), { initialValue: this.search.value });
+  private readonly typeValue = toSignal(this.typeFilter.valueChanges.pipe(startWith(this.typeFilter.value)), { initialValue: this.typeFilter.value });
+
+  constructor(
+    private readonly state: StateService,
+    private readonly router: Router,
+    private readonly keyCache: KeyCacheService,
+  ) {
     this.articles = this.state.articles;
+    this.hasKey = this.keyCache.hasKey;
+    this.filtered = computed(() => {
+      const q = (this.searchValue() || '').toLowerCase();
+      const t = this.typeValue();
+      return this.articles().filter(a => {
+        const matchTitle = !q || a.title.toLowerCase().includes(q);
+        const matchType = t == null || a.type === t;
+        return matchTitle && matchType;
+      });
+    });
   }
 
-  toggleEdit() { this.editing.update(v => !v); }
+  goCreate() { this.router.navigate(['/create']); }
 
-  addArticle() {
-    const article: LoreArticle = {
-      id: crypto.randomUUID(),
-      title: 'New Section',
-      sections: [ { access: LoreSectionAccess.PUBLIC, text: 'Write public lore here' } ],
-    } as any;
-    this.state.addArticle(article);
-  }
-
-  onUpdate(updated: LoreArticle) { this.state.updateArticle(updated); }
-
-  onRemove(id: string) {
-    if (!confirm('Delete this section?')) return;
-    this.state.removeArticle(id);
-  }
-
-  persist() { /* state persists on change */ }
 
   exportJSON() {
     const blob = new Blob([JSON.stringify(this.articles(), null, 2)], { type: 'application/json' });
@@ -53,7 +63,7 @@ export class AppComponent {
         try {
           const data = JSON.parse(txt) as LoreArticle[];
           if (!Array.isArray(data)) throw new Error('Bad file');
-          this.state.setArticles(data); this.persist();
+          this.state.setArticles(data);
         } catch { alert('Invalid JSON snapshot.'); }
       });
     };
@@ -61,15 +71,14 @@ export class AppComponent {
   }
 
   seedDemo() {
-    this.state.setArticles([
-      { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', sections: [
-        { access: LoreSectionAccess.PUBLIC, text: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.' }
-      ] },
-      { id: crypto.randomUUID(), title: 'Mystic Plane - Travel Notes', sections: [
-        { access: LoreSectionAccess.PUBLIC, text: 'Compass spins; paths fold. Following "silver rivers" of energy shortens journeys, but wanderers risk looping back a day older.' }
-      ] },
-    ] as any);
-    this.persist();
+    // this.state.setArticles([
+    //   { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', sections: [
+    //     { access: LoreSectionAccess.PUBLIC, text: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.' }
+    //   ] },
+    //   { id: crypto.randomUUID(), title: 'Mystic Plane - Travel Notes', sections: [
+    //     { access: LoreSectionAccess.PUBLIC, text: 'Compass spins; paths fold. Following "silver rivers" of energy shortens journeys, but wanderers risk looping back a day older.' }
+    //   ] },
+    // ] as any);
   }
 }
 
@@ -82,7 +91,6 @@ export class AppComponent {
 // 4) Run: npm start (or: ng serve) and open http://localhost:4200
 // 5) Share: deploy the built app (ng build --configuration production) to any static host.
 //    Use Export/Import JSON to share snapshots with others; distribute passphrases separately.
-
 
 
 

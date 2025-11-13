@@ -4,6 +4,15 @@
       <div>
         <input formControlName="title" placeholder="Section title" />
       </div>
+      <div class="type-select">
+        <label>Type</label>
+        <select [formControl]="form.controls.type">
+          <option [ngValue]="null">— None —</option>
+          @for (t of articleTypes; track t) {
+            <option [ngValue]="t">{{ t }}</option>
+          }
+        </select>
+      </div>
     } @else {
       <div class="title">{{ article.title }}</div>
     }

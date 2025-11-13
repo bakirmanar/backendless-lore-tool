@@ -1,7 +1,7 @@
 import { Component, OnInit, Signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { LoreArticle } from '@app/models';
+import { LoreArticle, LoreSectionAccess } from '@app/models';
 import { KeyCacheService, StateService } from '@app/services';
 
 @Component({
@@ -13,6 +13,7 @@ import { KeyCacheService, StateService } from '@app/services';
 export class LoreArticleEditorComponent implements OnInit {
   article: LoreArticle | null = null;
   readonly hasKey: Signal<boolean> = inject(KeyCacheService).hasKey;
+  private isCreate = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -23,11 +24,27 @@ export class LoreArticleEditorComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     const all = this.state.articles();
-    this.article = all.find(a => a.id === id) ?? null;
+    if (this.route.routeConfig?.path === 'create') {
+      this.isCreate = true;
+      this.article = {
+        id: crypto.randomUUID(),
+        title: 'New Article',
+        type: null,
+        sections: [
+          { access: LoreSectionAccess.PUBLIC, text: '' }
+        ]
+      } as LoreArticle;
+    } else {
+      this.article = all.find(a => a.id === id) ?? null;
+    }
   }
 
   onUpdate(updated: LoreArticle) {
-    this.state.updateArticle(updated);
+    if (this.isCreate) {
+      this.state.addArticle(updated);
+    } else {
+      this.state.updateArticle(updated);
+    }
     this.router.navigate(['/']);
   }
 

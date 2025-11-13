@@ -1,0 +1,21 @@
+<section class="article-page" *ngIf="article; else notFound">
+  <header class="page-header">
+    <button mat-button type="button" (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+    <span class="spacer"></span>
+    <button mat-stroked-button color="primary" type="button" *ngIf="hasKey()" (click)="edit()">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+  </header>
+
+  <app-lore-article [article]="article" [editing]="false"></app-lore-article>
+</section>
+
+<ng-template #notFound>
+  <div class="muted">Article not found.</div>
+  <button mat-button type="button" (click)="back()">Go Home</button>
+  </ng-template>
+

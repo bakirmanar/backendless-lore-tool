@@ -104,3 +104,16 @@ input {
   text-align: center;
   margin-top: 18px;
 }
+
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin: 12px 0 8px;
+}
+
+.fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+}

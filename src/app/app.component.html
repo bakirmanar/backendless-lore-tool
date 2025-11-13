@@ -3,34 +3,41 @@
   <header>
     <h1>&#128220; Lore Sheet <span class="pill">Angular &bull; client-side encryption &bull; per-section locks</span></h1>
     <div class="toolbar">
-      <button (click)="toggleEdit()" [attr.aria-pressed]="editing()">&#9999;️ Author Mode</button>
       <button (click)="exportJSON()">&#10515; Export JSON</button>
       <button (click)="importJSON()">&#10502; Import JSON</button>
       <button (click)="seedDemo()">&#127793; Seed Demo</button>
     </div>
   </header>
 
-  <div class="grid">
-    @for (card of articles(); track card.id) {
-      <app-lore-article [article]="card" [editing]="editing()"
-        (update)="onUpdate($event)" (remove)="onRemove($event)"></app-lore-article>
+  <section class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput [formControl]="search" placeholder="Find by title" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select [formControl]="typeFilter">
+        <mat-option [value]="null">All</mat-option>
+        <mat-option [value]="ArticleType.CHARACTER">Character</mat-option>
+        <mat-option [value]="ArticleType.LOCATION">Location</mat-option>
+        <mat-option [value]="ArticleType.FACTION">Faction</mat-option>
+        <mat-option [value]="ArticleType.HISTORICAL_EVENT">Historical Event</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <mat-nav-list>
+    @for (a of filtered(); track a.id) {
+      <a mat-list-item [routerLink]="['/article', a.id]">{{ a.title }}</a>
     }
-  </div>
+  </mat-nav-list>
 
-  <div class="bottom-actions">
-    <button (click)="addArticle()">Add Article</button>
-    <span class="muted">Changes are saved to your browser until you export.</span>
-  </div>
-
+  <button *ngIf="hasKey()" mat-fab color="primary" class="fab" aria-label="Create article" (click)="goCreate()">
+    <mat-icon>add</mat-icon>
+  </button>
 
   <p class="muted footer-note">Made for worldbuilders. Zero backend. &#10024;</p>
 </div>
 
-
-
-
-
 <router-outlet></router-outlet>
-
-
 

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, inject, Signal, effect } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess } from '@app/models';
+import { LoreArticle, EncryptedBundle, LoreSection, LoreSectionAccess, ArticleType } from '@app/models';
 import { CryptoService, KeyCacheService } from '@app/services';
 
 export type SectionFormGroup = FormGroup<{
@@ -23,10 +23,18 @@ export class LoreArticleComponent implements OnChanges {
 
   form: FormGroup<{
     title: FormControl<string>,
+    type: FormControl<ArticleType | null>,
     sections: FormArray<SectionFormGroup>
   }>;
   get sections(): FormArray<SectionFormGroup> { return this.form.controls.sections; }
   readonly LoreSectionAccess = LoreSectionAccess;
+  readonly ArticleType = ArticleType;
+  readonly articleTypes: ArticleType[] = [
+    ArticleType.CHARACTER,
+    ArticleType.LOCATION,
+    ArticleType.FACTION,
+    ArticleType.HISTORICAL_EVENT,
+  ];
   readonly hasKey: Signal<boolean>;
 
   constructor(
@@ -38,13 +46,14 @@ export class LoreArticleComponent implements OnChanges {
     effect(() => { if (this.hasKey()) { this.decryptAllPrivate(); } });
     this.form = this.formBuilder.group({
       title: this.formBuilder.control<string>('', { nonNullable: true, validators: [Validators.required] }),
+      type: this.formBuilder.control<ArticleType | null>(null),
       sections: this.formBuilder.array<SectionFormGroup>([]),
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['article'] && this.article) {
-      this.form.patchValue({ title: this.article.title ?? '' }, { emitEvent: false });
+      this.form.patchValue({ title: this.article.title ?? '', type: this.article.type ?? null }, { emitEvent: false });
       this.sections.clear();
       for (const s of this.article.sections) {
         if (s.access === LoreSectionAccess.PUBLIC) {
@@ -81,7 +90,7 @@ export class LoreArticleComponent implements OnChanges {
         out.push({ access: LoreSectionAccess.PRIVATE, enc: bundle });
       }
     }
-    const next: LoreArticle = { id: this.article.id, title: raw.title, sections: out };
+    const next: LoreArticle = { id: this.article.id, title: raw.title, type: raw.type ?? null, sections: out };
     this.update.emit(next);
   }
 
