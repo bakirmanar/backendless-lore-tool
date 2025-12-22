@@ -8,7 +8,9 @@ export class CryptoService {
 
   constructor(private readonly keyCacheService: KeyCacheService) {}
 
-  private randBytes(n: number) { return crypto.getRandomValues(new Uint8Array(n)); }
+  private randBytes(n: number) {
+    return crypto.getRandomValues(new Uint8Array(n));
+  }
 
   async encrypt(pass: string, plaintext: string) {
     const salt = this.keyCacheService.getOrCreateSalt('dm');
