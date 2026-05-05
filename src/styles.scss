@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+html,
+body {
+  margin: 0;
+}
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$orange-palette,
+    ),
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+html {
+  background-color: var(--mat-sys-surface);
+}
+
+* {
+  box-sizing: border-box;
+}

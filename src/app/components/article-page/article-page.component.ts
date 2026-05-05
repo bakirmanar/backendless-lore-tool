@@ -1,6 +1,6 @@
 import { Component, OnInit, Signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoreArticle } from '@app/models';
+import { Article } from '@app/models';
 import { KeyCacheService, StateService } from '@app/services';
 
 @Component({
@@ -10,7 +10,7 @@ import { KeyCacheService, StateService } from '@app/services';
   styleUrls: ['./article-page.component.scss']
 })
 export class ArticlePageComponent implements OnInit {
-  article: LoreArticle | null = null;
+  article: Article | null = null;
   readonly hasKey: Signal<boolean> = inject(KeyCacheService).hasKey;
 
   constructor(

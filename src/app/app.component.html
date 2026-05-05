@@ -1,43 +1,14 @@
 ﻿<div class="wrap">
+  <!-- region HEADER -->
   <app-header></app-header>
   <header>
     <h1>&#128220; Lore Sheet <span class="pill">Angular &bull; client-side encryption &bull; per-section locks</span></h1>
     <div class="toolbar">
       <button (click)="exportJSON()">&#10515; Export JSON</button>
       <button (click)="importJSON()">&#10502; Import JSON</button>
-      <button (click)="seedDemo()">&#127793; Seed Demo</button>
     </div>
   </header>
+  <!-- endregion HEADER -->
 
-  <section class="filters">
-    <mat-form-field appearance="outline">
-      <mat-label>Search</mat-label>
-      <input matInput [formControl]="search" placeholder="Find by title" />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Type</mat-label>
-      <mat-select [formControl]="typeFilter">
-        <mat-option [value]="null">All</mat-option>
-        <mat-option [value]="ArticleType.CHARACTER">Character</mat-option>
-        <mat-option [value]="ArticleType.LOCATION">Location</mat-option>
-        <mat-option [value]="ArticleType.FACTION">Faction</mat-option>
-        <mat-option [value]="ArticleType.HISTORICAL_EVENT">Historical Event</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </section>
-
-  <mat-nav-list>
-    @for (a of filtered(); track a.id) {
-      <a mat-list-item [routerLink]="['/article', a.id]">{{ a.title }}</a>
-    }
-  </mat-nav-list>
-
-  <button *ngIf="hasKey()" mat-fab color="primary" class="fab" aria-label="Create article" (click)="goCreate()">
-    <mat-icon>add</mat-icon>
-  </button>
-
-  <p class="muted footer-note">Made for worldbuilders. Zero backend. &#10024;</p>
+  <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>
-

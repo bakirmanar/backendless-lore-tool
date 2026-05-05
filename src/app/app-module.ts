@@ -4,8 +4,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
-import { LoreArticleComponent, LoreArticleEditorComponent, ArticlePageComponent } from '@app/components';
-import { AppHeaderComponent } from '@app/components';
+import {
+  LoreArticleComponent,
+  LoreArticleEditorComponent,
+  ArticlePageComponent,
+  AppHeaderComponent,
+  ArticleListComponent,
+  PassphraseDialogComponent
+} from '@app/components';
 import { ReactiveFormsModule } from '@angular/forms'
 import { MarkdownPipe } from '@app/pipes';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -16,7 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
-import { PassphraseDialogComponent } from '@app/components/app-header/passphrase-dialog.component'
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -27,6 +33,7 @@ import { PassphraseDialogComponent } from '@app/components/app-header/passphrase
     AppHeaderComponent,
     PassphraseDialogComponent,
     MarkdownPipe,
+    ArticleListComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,11 +47,13 @@ import { PassphraseDialogComponent } from '@app/components/app-header/passphrase
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -15,7 +15,7 @@
 - Angular workspace config: `angular.json`; TypeScript configs: `tsconfig*.json`.
 - Angular version is 20. Follow official Angular 20 guidelines
 - Use angular material v20+
-- Use full names for injections (e.g. `private readonly cryptoService: CryptoService,`)
+- Use full names for injections (e.g. `private readonly cryptoService: BundleCryptoService,`)
 
 ## Build, Test, and Development Commands
 - `npm start` — Run dev server at localhost with HMR.
@@ -27,7 +27,7 @@
 ## Coding Style & Naming Conventions
 - TypeScript with 2‑space indentation and single quotes (see `prettier` in `package.json`).
 - File names: kebab‑case (e.g., `lore-card.component.ts`).
-- Classes/Components/Services: PascalCase (e.g., `LoreCardComponent`, `CryptoService`).
+- Classes/Components/Services: PascalCase (e.g., `LoreCardComponent`, `BundleCryptoService`).
 - Re‑export barrel files allowed in `index.ts` within folders.
 - Dont use `any` type.
 - Create types for all business related instances, enumerations.
@@ -35,7 +35,7 @@
 
 ## Testing Guidelines
 - Framework: Jasmine; runner: Karma. Place tests as `*.spec.ts` beside code.
-- Prefer shallow tests for components and focused tests for services (e.g., `CryptoService`).
+- Prefer shallow tests for components and focused tests for services (e.g., `BundleCryptoService`).
 - Use spies for browser APIs and storage. Keep tests deterministic.
 - Generate coverage with `ng test --code-coverage`; aim to cover critical paths.
 
@@ -46,6 +46,6 @@
 - Keep PRs small and focused. Describe any refactors or public API changes.
 
 ## Architecture Notes
-- Angular app using services for storage and crypto (`storage.service.ts`, `crypto.service.ts`) and a `lore-card` component.
+- Angular app using services for storage and crypto (`storage.service.ts`, `bundle-crypto.service.ts`) and a `lore-card` component.
 - Avoid renaming core files without discussion; keep routing/module filenames consistent with current project patterns.
 - Use `@app/*` TS path aliases for imports (e.g., `@app/components`, `@app/services`, `@app/models`, `@app/pipes`) and add new `@app/<layer>` aliases when introducing new layers.

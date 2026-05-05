@@ -2,7 +2,7 @@
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoreArticleComponent } from './lore-article.component';
-import { LoreSectionAccess } from '@app/models';
+import { ContentAccess } from '@app/models';
 
 describe('LoreArticle', () => {
   let component: LoreArticleComponent;
@@ -17,7 +17,7 @@ describe('LoreArticle', () => {
 
     fixture = TestBed.createComponent(LoreArticleComponent);
     component = fixture.componentInstance;
-    component.article = { id: '1', title: 'Sample', sections: [{ access: LoreSectionAccess.PUBLIC, text: 'hello' }] } as any;
+    component.article = { id: '1', title: 'Sample', sections: [{ access: ContentAccess.PUBLIC, text: 'hello' }] } as any;
     fixture.detectChanges();
   });
 

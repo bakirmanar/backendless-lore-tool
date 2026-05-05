@@ -1,62 +1,12 @@
-﻿<section class="card" [formGroup]="form">
-  <header>
-    @if (editing) {
-      <div>
-        <input formControlName="title" placeholder="Section title" />
-      </div>
-      <div class="type-select">
-        <label>Type</label>
-        <select [formControl]="form.controls.type">
-          <option [ngValue]="null">— None —</option>
-          @for (t of articleTypes; track t) {
-            <option [ngValue]="t">{{ t }}</option>
-          }
-        </select>
-      </div>
-    } @else {
-      <div class="title">{{ article.title }}</div>
-    }
-  </header>
-  <div class="content">
-    @if (!editing) {
-      @for (sec of sections.controls; track $index; let i = $index) {
-        @switch (sec.controls.access.value) {
-          @case (LoreSectionAccess.PUBLIC) {
-            <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
-          }
-          @case (LoreSectionAccess.PRIVATE) {
-            @if (hasKey()) {
-              <div class="section" [innerHTML]="sec.controls.text.value | markdown"></div>
-            }
-          }
-        }
+﻿<section class="card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ article.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @for (sec of article.sections; track $index; let i = $index) {
+        <div class="section" [innerHTML]="sec.content | markdown"></div>
       }
-    } @else {
-      <div class="muted">Markdown supported: headings, lists, **bold**, *italics*, `code`, [links](https://example.com).</div>
-      @for (sec of sections.controls; track $index; let i = $index) {
-        <div class="section-edit">
-          <label>Visibility</label>
-          <select [formControl]="sec.controls.access">
-            <option [ngValue]="LoreSectionAccess.PUBLIC">Public</option>
-            <option [ngValue]="LoreSectionAccess.PRIVATE">Private (DM)</option>
-          </select>
-          <label>Content</label>
-          <textarea [formControl]="sec.controls.text" rows="4" placeholder="Markdown content"></textarea>
-          <button type="button" (click)="removeSection(i)">Remove Section</button>
-        </div>
-      }
-      <div class="actions more-actions">
-        <button type="button" (click)="addSection(LoreSectionAccess.PUBLIC)">Add Public Section</button>
-        <button type="button" (click)="addSection(LoreSectionAccess.PRIVATE)">Add DM Section</button>
-      </div>
-      <div class="actions">
-        <button type="button" (click)="remove.emit(article.id)">Delete Card</button>
-        <button type="button" (click)="lockAndSave()">Save</button>
-      </div>
-    }
-  </div>
+    </mat-card-content>
+  </mat-card>
 </section>
-
-
-
-

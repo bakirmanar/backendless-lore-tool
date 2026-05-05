@@ -1,11 +1,5 @@
-import { Component, Signal, computed, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { LoreArticle, ArticleType } from './models';
-import { StateService } from './services'
-import { KeyCacheService } from './services/key-cache.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { startWith } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { StateImportExportService } from './services'
 
 @Component({
   selector: 'app-root',
@@ -15,70 +9,14 @@ import { startWith } from 'rxjs';
   // encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
-  readonly articles: Signal<LoreArticle[]>;
-  readonly hasKey: Signal<boolean>;
-  // Filters
-  readonly search = new FormControl<string>('', { nonNullable: true });
-  readonly typeFilter = new FormControl<ArticleType | null>(null);
-  readonly ArticleType = ArticleType;
-  readonly filtered: Signal<LoreArticle[]>;
-  private readonly searchValue = toSignal(this.search.valueChanges.pipe(startWith(this.search.value)), { initialValue: this.search.value });
-  private readonly typeValue = toSignal(this.typeFilter.valueChanges.pipe(startWith(this.typeFilter.value)), { initialValue: this.typeFilter.value });
-
-  constructor(
-    private readonly state: StateService,
-    private readonly router: Router,
-    private readonly keyCache: KeyCacheService,
-  ) {
-    this.articles = this.state.articles;
-    this.hasKey = this.keyCache.hasKey;
-    this.filtered = computed(() => {
-      const q = (this.searchValue() || '').toLowerCase();
-      const t = this.typeValue();
-      return this.articles().filter(a => {
-        const matchTitle = !q || a.title.toLowerCase().includes(q);
-        const matchType = t == null || a.type === t;
-        return matchTitle && matchType;
-      });
-    });
-  }
-
-  goCreate() { this.router.navigate(['/create']); }
-
+  private readonly stateImportExportService: StateImportExportService = inject(StateImportExportService);
 
   exportJSON() {
-    const blob = new Blob([JSON.stringify(this.articles(), null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'lore-sheet.json'; a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+   this.stateImportExportService.export();
   }
 
   importJSON() {
-    const input = document.createElement('input');
-    input.type = 'file'; input.accept = 'application/json';
-    input.onchange = () => {
-      const file = input.files?.[0]; if (!file) return;
-      file.text().then(txt => {
-        try {
-          const data = JSON.parse(txt) as LoreArticle[];
-          if (!Array.isArray(data)) throw new Error('Bad file');
-          this.state.setArticles(data);
-        } catch { alert('Invalid JSON snapshot.'); }
-      });
-    };
-    input.click();
-  }
-
-  seedDemo() {
-    // this.state.setArticles([
-    //   { id: crypto.randomUUID(), title: 'The City of Grewatch (Gravewatch)', sections: [
-    //     { access: LoreSectionAccess.PUBLIC, text: 'A city displaced by a mystic surge, fused into a mountain ridge and wrapped in an unstable barrier. Traders call it Grewatch; locals still whisper Gravewatch.' }
-    //   ] },
-    //   { id: crypto.randomUUID(), title: 'Mystic Plane - Travel Notes', sections: [
-    //     { access: LoreSectionAccess.PUBLIC, text: 'Compass spins; paths fold. Following "silver rivers" of energy shortens journeys, but wanderers risk looping back a day older.' }
-    //   ] },
-    // ] as any);
+    this.stateImportExportService.import();
   }
 }
 

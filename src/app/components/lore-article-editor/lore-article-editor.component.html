@@ -1,16 +1,14 @@
 <section class="editor-overlay">
   <header class="editor-header">
-    <button type="button" (click)="back()">&#8592; Back</button>
+    <button mat-button type="button" (click)="back()">&#8592; Back</button>
     <div class="spacer"></div>
   </header>
 
-  <div class="editor-body" *ngIf="article; else notFound">
-    <app-lore-article [article]="article"
-                      [editing]="hasKey()"
-                      (update)="onUpdate($event)"></app-lore-article>
-  </div>
-
-  <ng-template #notFound>
+  @if (article) {
+    <div class="editor-body">
+      <app-lore-article [article]="article"></app-lore-article>
+    </div>
+  } @else {
     <div class="muted">Article not found.</div>
-  </ng-template>
+  }
 </section>

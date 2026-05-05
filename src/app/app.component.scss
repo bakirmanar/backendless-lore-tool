@@ -1,15 +1,16 @@
 :host {
   display: block;
-  background: linear-gradient(180deg, #0a0f17, #0b1220);
-  color: #e5e7eb;
-  font: 15px/1.5 system-ui;
-  -webkit-font-smoothing: antialiased
+  //background: linear-gradient(180deg, #0a0f17, #0b1220);
+  //color: #e5e7eb;
+  //font: 15px/1.5 system-ui;
+  //-webkit-font-smoothing: antialiased
 }
 
 .wrap {
   max-width: 1000px;
-  margin: 24px auto;
-  padding: 20px
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100svh;
 }
 
 header {

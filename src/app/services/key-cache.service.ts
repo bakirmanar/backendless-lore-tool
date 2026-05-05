@@ -29,12 +29,15 @@ export class KeyCacheService {
     }
   }
 
-  async getOrDerive(label: string, pass: string, salt: Uint8Array): Promise<CryptoKey> {
-    const saltB64 = this.bytesToBase64(salt);
-    const cacheKey = `${label}:${saltB64}`;
+  // async getOrDerive(label: string, pass: string, salt: Uint8Array): Promise<CryptoKey> {
+  async getOrDerive(pass: string, label: string = 'dm'): Promise<CryptoKey> {
+    const salt = this.getOrCreateSalt();
+    const cacheKey = `${label}:${salt}`;
     const existing = this.cache.get(cacheKey);
+
     if (existing) return existing;
     if (!pass) throw new Error('Passphrase required');
+
     const passKey = await crypto.subtle.importKey(
       'raw',
       new TextEncoder().encode(pass),
@@ -42,7 +45,7 @@ export class KeyCacheService {
       false,
       ['deriveKey']
     );
-    const saltBuf = this.u8ToArrayBuffer(salt);
+    const saltBuf = this.u8ToArrayBuffer(this.base64ToBytes(salt));
     const key = await crypto.subtle.deriveKey(
       { name: 'PBKDF2', salt: saltBuf, iterations: 120000, hash: 'SHA-256' },
       passKey,
@@ -51,6 +54,7 @@ export class KeyCacheService {
       ['encrypt', 'decrypt']
     );
     this.cache.set(cacheKey, key);
+    // TODO move to state?
     this._hasKey.set(this.cache.size > 0);
     try {
       const raw = new Uint8Array(await crypto.subtle.exportKey('raw', key));
@@ -86,13 +90,20 @@ export class KeyCacheService {
     this._hasKey.set(this.cache.size > 0);
   }
 
-  getOrCreateSalt(label: string): Uint8Array {
-    const key = this.SALT_PREFIX + label;
-    const existing = localStorage.getItem(key);
-    if (existing) return this.base64ToBytes(existing);
+  // getOrCreateSalt(label: string): Uint8Array {
+  getOrCreateSalt(): string {
+    // const key = this.SALT_PREFIX + label;
+    const key = this.SALT_PREFIX;
+    const existing = localStorage.getItem(key) as string;
+
+    if (existing) {
+      return existing;
+    }
+
     const salt = crypto.getRandomValues(new Uint8Array(16));
-    localStorage.setItem(key, this.bytesToBase64(salt));
-    return salt;
+    const base64Salt = this.bytesToBase64(salt);
+    localStorage.setItem(key, base64Salt);
+    return base64Salt;
   }
 
   private bytesToBase64(u8: Uint8Array): string {
