@@ -5,3 +5,4 @@ export * from './article.model';
 export * from './state.model';
 export * from './content-access.model';
 export * from './user.model';
+export * from './storage.model';

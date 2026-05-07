@@ -10,7 +10,9 @@ import {
   ArticlePageComponent,
   AppHeaderComponent,
   ArticleListComponent,
-  PassphraseDialogComponent
+  PassphraseDialogComponent,
+  LayoutWithNavComponent,
+  LayoutWithoutNavComponent
 } from '@app/components';
 import { ReactiveFormsModule } from '@angular/forms'
 import { MarkdownPipe } from '@app/pipes';
@@ -34,6 +36,8 @@ import { MatCardModule } from '@angular/material/card';
     PassphraseDialogComponent,
     MarkdownPipe,
     ArticleListComponent,
+    LayoutWithNavComponent,
+    LayoutWithoutNavComponent,
   ],
   imports: [
     BrowserModule,

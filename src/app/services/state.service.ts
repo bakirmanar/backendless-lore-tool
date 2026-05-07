@@ -1,7 +1,6 @@
 import { Injectable, computed, signal, inject } from '@angular/core';
-import { Article, User } from '@app/models';
-import { StorageService } from './storage.service';
-import { AppState } from '@app/models/state.model';
+import { Article, User, AppState, StorageKeys } from '@app/models';
+import { StorageService } from '@app/services';
 
 const generateAppStateTestData = (): AppState => {
   const graywatchTag = { id: crypto.randomUUID(), name: 'Greywatch' };
@@ -76,13 +75,25 @@ const generateAppStateTestData = (): AppState => {
 export class StateService {
   private readonly storageService: StorageService = inject(StorageService);
 
-  private readonly _state = signal<AppState>(this.storageService.load() ?? generateAppStateTestData() ?? {
+  private readonly _state = signal<AppState>({
     currentUser: null,
     articles: [],
   });
   readonly articles = computed<Article[]>(() => this._state().articles);
   readonly authorized = computed<boolean>(() => Boolean(this._state().currentUser));
   readonly authorizedAsOwner = computed<boolean>(() => Boolean(this._state().currentUser && this._state().ownerData));
+
+  constructor() {
+    this.init();
+  }
+
+  private async init(): Promise<void> {
+    const state = (await this.storageService.get(StorageKeys.APP_STATE)) ?? generateAppStateTestData();
+
+    if (state) {
+      this.state = state;
+    }
+  }
 
   get state(): AppState {
     return this._state();
@@ -120,7 +131,7 @@ export class StateService {
     this.persist();
   }
 
-  removeArticle(id: string) {
+  async removeArticle(id: string) {
     this._state.update((current) => ({
       ...current,
       articles: current.articles.filter((a) => a.id !== id),
@@ -128,7 +139,7 @@ export class StateService {
     this.persist();
   }
 
-  private persist() {
-    this.storageService.save(this._state());
+  private async persist(): Promise<void> {
+    return this.storageService.set(StorageKeys.APP_STATE, this._state());
   }
 }
