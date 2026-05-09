@@ -33,6 +33,6 @@ export class AppHeaderComponent {
   }
 
   importJSON() {
-    this.stateImportExportService.import();
+    this.stateImportExportService.importFromLocalFile();
   }
 }

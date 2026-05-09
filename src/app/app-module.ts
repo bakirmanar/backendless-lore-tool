@@ -14,6 +14,7 @@ import {
   LayoutWithNavComponent,
   LayoutWithoutNavComponent
 } from '@app/components';
+import { LoadBundlePage } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms'
 import { MarkdownPipe } from '@app/pipes';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -25,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { MatCardModule } from '@angular/material/card';
     ArticleListComponent,
     LayoutWithNavComponent,
     LayoutWithoutNavComponent,
+    LoadBundlePage,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(),
   ],
   bootstrap: [AppComponent]
 })

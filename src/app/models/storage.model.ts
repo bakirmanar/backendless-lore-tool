@@ -1,4 +1,5 @@
 ﻿import { AppState } from '@app/models/state.model';
+import { EncryptedBundle } from '@app/models/encrypted-bundle.model';
 
 export enum StorageKeys {
   BUNDLE_DATA = 'BUNDLE_DATA',
@@ -6,7 +7,7 @@ export enum StorageKeys {
 }
 
 export type StorageKeyValueTypeMap = {
-  [StorageKeys.BUNDLE_DATA]: string,
+  [StorageKeys.BUNDLE_DATA]: EncryptedBundle,
   [StorageKeys.APP_STATE]: AppState,
 }
 

@@ -4,25 +4,28 @@ import {
   LoreArticleEditorComponent,
   ArticlePageComponent,
   ArticleListComponent,
-  LayoutWithNavComponent
+  LayoutWithNavComponent,
+  LayoutWithoutNavComponent
 } from '@app/components';
+import { HasBundleGuard } from '@app/guards';
+import { LoadBundlePage } from '@app/pages';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: LayoutWithoutNavComponent,
-  //   children: [
-  //     { path: 'login', component: LoginComponent },
-  //   ]
-  // },
   {
     path: '',
     component: LayoutWithNavComponent,
     children: [
-      { path: '', component: ArticleListComponent },
-      { path: 'article/:id', component: ArticlePageComponent },
-      { path: 'edit/:id', component: LoreArticleEditorComponent },
-      { path: 'create', component: LoreArticleEditorComponent },
+      { path: '', component: ArticleListComponent, canActivate: [HasBundleGuard] },
+      { path: 'article/:id', component: ArticlePageComponent, canActivate: [HasBundleGuard] },
+      { path: 'edit/:id', component: LoreArticleEditorComponent, canActivate: [HasBundleGuard] },
+      { path: 'create', component: LoreArticleEditorComponent, canActivate: [HasBundleGuard] },
+    ]
+  },
+  {
+    path: '',
+    component: LayoutWithoutNavComponent,
+    children: [
+      { path: 'loadBundle', component: LoadBundlePage },
     ]
   },
 ];

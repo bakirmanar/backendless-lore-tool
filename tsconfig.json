@@ -39,6 +39,24 @@
       ],
       "@app/pipes/*": [
         "src/app/pipes/*"
+      ],
+      "@app/pages": [
+        "src/app/pages/index.ts"
+      ],
+      "@app/pages/*": [
+        "src/app/pages/*"
+      ],
+      "@app/api": [
+        "src/app/api/index.ts"
+      ],
+      "@app/api/*": [
+        "src/app/api/*"
+      ],
+      "@app/guards": [
+        "src/app/guards/index.ts"
+      ],
+      "@app/guards/*": [
+        "src/app/guards/*"
       ]
     }
   },

@@ -1,7 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { StateService } from '@app/services/state.service';
-import { EncryptedBundle } from '@app/models';
+import { EncryptedBundle, FileType, StorageKeys } from '@app/models';
 import { BundleCryptoService } from '@app/services/crypto/bundle-crypto.service';
+import { FileService } from '@app/services/file.service';
+import { StorageService } from '@app/services/storage/storage.service';
+import { encryptedBundleToAppState } from '../transformers';
 
 @Injectable({
   providedIn: 'root',
@@ -9,42 +12,45 @@ import { BundleCryptoService } from '@app/services/crypto/bundle-crypto.service'
 export class StateImportExportService {
   private readonly stateService: StateService = inject(StateService);
   private readonly bundleCryptoService: BundleCryptoService = inject(BundleCryptoService);
+  private readonly fileService: FileService = inject(FileService);
+  private readonly storageService: StorageService = inject(StorageService);
 
-  import() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'application/json';
-    input.onchange = () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      file.text().then(async (txt) => {
-        try {
-          // TODO password field?
-          const parsedObj = JSON.parse(txt) as EncryptedBundle;
-          const decryptedData = await this.bundleCryptoService.decrypt(parsedObj, 'dsa');
-          if (decryptedData) {
-            this.stateService.state = decryptedData;
-          }
-        } catch {
-          alert('Invalid JSON snapshot.');
-        }
-      });
-    };
-    input.click();
+  async importFromStorage(passphrase?: string) {
+    const bundle = await this.storageService.get(StorageKeys.BUNDLE_DATA);
+
+    if (!bundle) {
+      return;
+    }
+
+    if (!passphrase) {
+      this.stateService.state = encryptedBundleToAppState(bundle);
+    } else {
+      const decryptedData = await this.bundleCryptoService.decrypt(bundle, passphrase );
+      if (decryptedData) {
+        this.stateService.state = decryptedData;
+      }
+    }
   }
 
-  async export() {
+  async importFromLocalFile() {
+    try {
+      // TODO password field?
+      const fileContents = await this.fileService.readLocalFile(FileType.JSON);
+      const parsedObj = JSON.parse(fileContents ?? '') as EncryptedBundle;
+      const decryptedData = await this.bundleCryptoService.decrypt(parsedObj, 'dsa');
+      if (decryptedData) {
+        this.stateService.state = decryptedData;
+      }
+    } catch {
+      alert('Invalid JSON snapshot.');
+    }
+  }
+
+  async export(): Promise<void> {
     if (!this.stateService.authorizedAsOwner()) return;
 
     const bundle = (await this.bundleCryptoService.encrypt(this.stateService.state))!;
 
-    // TODO move to separate service
-    const blob = new Blob([JSON.stringify(bundle, null, 2)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lore-sheet.json';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    this.fileService.downloadFile(bundle, 'lore-sheet', FileType.JSON);
   }
 }
