@@ -7,6 +7,7 @@ import { HeaderWithAnchorExtension } from './extensions/header-with-anchor.exten
 import { ArticleLinkExtension } from './extensions/article-link.extension';
 import { MarkdownArticleStorageService } from './markdown-article-storage.service';
 import { RenderContentsTableLink } from '@app/markdown/render-article.types';
+import { ImageExtension } from './extensions/image.extension';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class MarkdownParserService {
   private readonly sanitizer: DomSanitizer = inject(DomSanitizer);
   private readonly headerWithAnchorExtension: HeaderWithAnchorExtension = inject(HeaderWithAnchorExtension);
   private readonly articleLinkExtension: ArticleLinkExtension = inject(ArticleLinkExtension);
+  private readonly imageExtension: ImageExtension = inject(ImageExtension);
   private readonly markdownArticleStorageService: MarkdownArticleStorageService = inject(MarkdownArticleStorageService);
 
   private readonly marked: Marked = new Marked({
@@ -22,8 +24,9 @@ export class MarkdownParserService {
     breaks: true,
     extensions: [
       this.headerWithAnchorExtension.buildMarkedConfiguration(),
-      this.articleLinkExtension.buildMarkedConfiguration() as any
-    ]
+      this.articleLinkExtension.buildMarkedConfiguration(),
+      this.imageExtension.buildMarkedConfiguration(),
+    ],
   });
 
   parseArticle(article: Article): [SafeHtml[], Iterable<RenderContentsTableLink>] | null {
@@ -32,7 +35,9 @@ export class MarkdownParserService {
     this.markdownArticleStorageService.parsingStarted();
     const result = article.sections.map((section) => {
       const html = this.marked.parse(section.content) as string;
-      const clean = DOMPurify.default().sanitize(html, { ADD_ATTR: ['target', 'rel'] }) as string;
+      const clean = DOMPurify.default().sanitize(html, {
+        ADD_ATTR: ['target', 'rel', 'style'],
+      }) as string;
       return this.sanitizer.bypassSecurityTrustHtml(clean);
     });
     const tableOfContentsArr = this.markdownArticleStorageService.currentArticleContents.values();

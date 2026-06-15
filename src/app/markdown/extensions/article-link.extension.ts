@@ -1,6 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { Token } from 'marked';
+import { TokenizerAndRendererExtension, Tokens } from 'marked';
 import { StateService } from '@app/services';
+
+type ArticleLinkToken = Tokens.Generic & {
+  type: 'articleLink';
+  raw: string;
+  target: string;
+  label?: string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +15,7 @@ import { StateService } from '@app/services';
 export class ArticleLinkExtension {
   private readonly stateService: StateService = inject(StateService);
 
-  buildMarkedConfiguration() {
+  buildMarkedConfiguration(): TokenizerAndRendererExtension {
     // TODO check if this being build on each render?
     const buildIndex = () => {
       const articles = this.stateService.articles();
@@ -21,13 +28,13 @@ export class ArticleLinkExtension {
       return { byId, byTitle };
     };
 
-    type ArticleLinkToken = Token & { type: 'articleLink'; raw: string; target: string; label?: string };
-
     return {
       name: 'articleLink',
       level: 'inline' as const,
-      start(src: string) { return src.indexOf('[['); },
-      tokenizer(this: any, src: string) {
+      start(src: string) {
+        return src.indexOf('[[');
+      },
+      tokenizer(src: string) {
         const rule = /^\[\[([^\]|]+?)(?:\|([^\]]+))?]]/;
         const match = rule.exec(src);
         if (match) {
@@ -36,18 +43,22 @@ export class ArticleLinkExtension {
             raw: match[0],
             target: match[1].trim(),
             label: (match[2] || '').trim(),
-          } as any;
+          };
           return token;
         }
-        return null
+        return undefined;
       },
-      renderer: (token: ArticleLinkToken) => {
+      renderer: (token: Tokens.Generic) => {
+        const articleLinkToken = token as ArticleLinkToken;
         const { byId, byTitle } = buildIndex();
-        const t = token.target;
+        const t = articleLinkToken.target;
         const byExactId = byId.get(t);
         const byExactTitle = byTitle.get(t.trim().toLowerCase());
         const hit = byExactId || byExactTitle;
-        const text = token.label && token.label.length ? token.label : (hit?.title ?? t);
+        const text =
+          articleLinkToken.label && articleLinkToken.label.length
+            ? articleLinkToken.label
+            : (hit?.title ?? t);
         if (!hit) {
           return `<span class="missing-article">${text}</span>`;
         }
