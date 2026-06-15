@@ -1,12 +1,21 @@
-﻿<section class="card">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ article.title }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      @for (sec of article.sections; track $index; let i = $index) {
-        <div class="section" [innerHTML]="sec.content | markdown"></div>
+﻿<mat-drawer-container class="lore-article-content-wrapper" autosize hasBackdrop="false">
+  <mat-drawer #drawer class="lore-article-side-nav" mode="over">
+    @if (articleContents()) {
+      @for (chunk of articleContents(); track $index) {
+        <div [style.margin-left]="20 * (chunk.depth - 1) + 'px'">
+          <a [href]="currentUrlWithoutFragment() + '#' + chunk.href">{{ chunk.label }}</a>
+        </div>
       }
-    </mat-card-content>
-  </mat-card>
-</section>
+    }
+  </mat-drawer>
+
+  <div>
+    <h1>{{ article().title }}</h1>
+
+    <button type="button" matButton (click)="drawer.toggle()">Toggle sidenav</button>
+
+    @for (sec of articleHtml(); track $index; let i = $index) {
+      <div class="section" [innerHTML]="sec.html"></div>
+    }
+  </div>
+</mat-drawer-container>

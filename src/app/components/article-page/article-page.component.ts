@@ -1,7 +1,8 @@
-import { Component, OnInit, Signal, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Article } from '@app/models';
-import { KeyCacheService, StateService } from '@app/services';
+import { StateService } from '@app/services';
+import { routeParamSignal } from '@app/signals';
 
 @Component({
   selector: 'app-article-page',
@@ -9,27 +10,29 @@ import { KeyCacheService, StateService } from '@app/services';
   templateUrl: './article-page.component.html',
   styleUrls: ['./article-page.component.scss']
 })
-export class ArticlePageComponent implements OnInit {
-  article: Article | null = null;
-  readonly hasKey: Signal<boolean> = inject(KeyCacheService).hasKey;
+export class ArticlePageComponent {
+  protected readonly stateService: StateService = inject(StateService);
+  private readonly router: Router = inject(Router);
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly state: StateService,
-  ) {}
+  private readonly articleId = routeParamSignal<string>('id');
+  protected readonly article = computed<Article | undefined>(() => {
+    const articleId = this.articleId();
+    const articles = this.stateService.articles();
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    const all = this.state.articles();
-    this.article = all.find(a => a.id === id) ?? null;
-  }
+    return articles && articleId
+      ? articles.find((article) => article.id === articleId)
+      : undefined;
+  });
 
   edit() {
-    if (!this.article) return;
-    this.router.navigate(['/edit', this.article.id]);
+    if (!this.article()) return;
+
+    this.router.navigate(['/edit', this.article()!.id]);
   }
 
-  back() { this.router.navigate(['/']); }
+  back() {
+    // Should go back and not to main page
+    this.router.navigate(['/']);
+  }
 }
 

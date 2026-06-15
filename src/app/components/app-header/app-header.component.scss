@@ -1,3 +1,18 @@
+app-header {
+  display: block;
+  width: 100%;
+  background-color: var(--mat-sys-primary);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .mat-toolbar {
+    width: var(--app-page-container-width);
+    margin: 0 auto;
+  }
+}
+
+
 .spacer {
   flex: 1 1 auto;
 }

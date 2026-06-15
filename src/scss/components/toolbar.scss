@@ -1,0 +1,16 @@
+﻿@use '@angular/material' as mat;
+
+@mixin toolbarOverrides {
+  :root {
+    @include mat.toolbar-overrides((
+      container-background-color: var(--mat-sys-primary),
+      container-text-color: var(--mat-sys-on-primary),
+    ));
+  }
+
+  .mat-toolbar {
+    .mat-mdc-icon-button {
+      color: var(--mat-sys-on-primary);
+    }
+  }
+}

@@ -1,3 +1,10 @@
-:host {
+app-article-list {
   display: block;
+}
+
+.filters {
+  display: flex;
+  gap: var(--app-gap-m);
+  align-items: flex-end;
+  margin: 12px 0 8px;
 }

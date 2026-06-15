@@ -16,7 +16,6 @@ import {
 } from '@app/components';
 import { LoadBundlePage } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms'
-import { MarkdownPipe } from '@app/pipes';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -27,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { provideHttpClient } from '@angular/common/http';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,6 @@ import { provideHttpClient } from '@angular/common/http';
     ArticlePageComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
-    MarkdownPipe,
     ArticleListComponent,
     LayoutWithNavComponent,
     LayoutWithoutNavComponent,
@@ -55,7 +54,8 @@ import { provideHttpClient } from '@angular/common/http';
     MatInputModule,
     MatSelectModule,
     MatListModule,
-    MatCardModule
+    MatCardModule,
+    MatSidenavModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

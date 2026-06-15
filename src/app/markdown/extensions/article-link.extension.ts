@@ -1,28 +1,17 @@
-﻿import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { marked, Token } from 'marked';
-import * as DOMPurify from 'dompurify';
+import { inject, Injectable } from '@angular/core';
+import { Token } from 'marked';
 import { StateService } from '@app/services';
 
-// Global base options (renderer configured in setup)
-marked.setOptions({ gfm: true, breaks: true });
-
-@Pipe({
-  name: 'markdown',
-  standalone: false,
+@Injectable({
+  providedIn: 'root',
 })
-export class MarkdownPipe implements PipeTransform {
-  constructor(
-    private readonly sanitizer: DomSanitizer,
-    private readonly state: StateService,
-  ) {
-    this.setupMarkdownExtensions();
-  }
+export class ArticleLinkExtension {
+  private readonly stateService: StateService = inject(StateService);
 
-  private setupMarkdownExtensions() {
+  buildMarkedConfiguration() {
     // TODO check if this being build on each render?
     const buildIndex = () => {
-      const articles = this.state.articles();
+      const articles = this.stateService.articles();
       const byId = new Map<string, { id: string; title: string }>();
       const byTitle = new Map<string, { id: string; title: string }>();
       for (const a of articles) {
@@ -32,22 +21,14 @@ export class MarkdownPipe implements PipeTransform {
       return { byId, byTitle };
     };
 
-    const renderer = new marked.Renderer();
-    renderer.link = ({ href, title, text }) => {
-      const t = title ? ` title="${title}"` : '';
-      const url = href ?? '';
-      const isInternal = url.startsWith('/') || url.startsWith('#');
-      const extra = isInternal ? '' : ' target="_blank" rel="noopener noreferrer"';
-      return `<a href="${url}"${t}${extra}>${text}</a>`;
-    };
-
     type ArticleLinkToken = Token & { type: 'articleLink'; raw: string; target: string; label?: string };
-    const articleLinkExt = {
+
+    return {
       name: 'articleLink',
       level: 'inline' as const,
       start(src: string) { return src.indexOf('[['); },
       tokenizer(this: any, src: string) {
-        const rule = /^\[\[([^\]|]+?)(?:\|([^\]]+))?\]\]/;
+        const rule = /^\[\[([^\]|]+?)(?:\|([^\]]+))?]]/;
         const match = rule.exec(src);
         if (match) {
           const token: ArticleLinkToken = {
@@ -74,16 +55,5 @@ export class MarkdownPipe implements PipeTransform {
         return `<a href="${href}" class="article-link">${text}</a>`;
       },
     };
-
-    marked.setOptions({ renderer });
-    marked.use({ extensions: [articleLinkExt as any], renderer });
-  }
-
-  transform(src?: string | null): SafeHtml {
-    if (!src) return this.sanitizer.bypassSecurityTrustHtml('');
-    const html = marked.parse(src) as string;
-    const clean = DOMPurify.default().sanitize(html, { ADD_ATTR: ['target', 'rel'] }) as string;
-    return this.sanitizer.bypassSecurityTrustHtml(clean);
   }
 }
-

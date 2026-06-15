@@ -57,6 +57,24 @@
       ],
       "@app/guards/*": [
         "src/app/guards/*"
+      ],
+      "@app/signals": [
+        "src/app/signals/index.ts"
+      ],
+      "@app/signals/*": [
+        "src/app/signals/*"
+      ],
+      "@app/helpers": [
+        "src/app/helpers/index.ts"
+      ],
+      "@app/helpers/*": [
+        "src/app/helpers/*"
+      ],
+      "@app/markdown": [
+        "src/app/markdown/index.ts"
+      ],
+      "@app/markdown/*": [
+        "src/app/markdown/*"
       ]
     }
   },

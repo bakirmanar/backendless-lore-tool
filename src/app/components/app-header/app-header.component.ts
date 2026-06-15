@@ -1,5 +1,5 @@
 import { firstValueFrom } from 'rxjs';
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {  StateImportExportService, StateService } from '@app/services';
 import { PassphraseDialogComponent } from '@app/components/app-header/passphrase-dialog.component';
@@ -10,6 +10,7 @@ import { AuthService } from '@app/services/auth.service';
   standalone: false,
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppHeaderComponent {
   private readonly matDialogService = inject(MatDialog);

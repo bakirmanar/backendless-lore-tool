@@ -1,6 +1,8 @@
-import { Component, effect, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Article } from '@app/models';
-import { BundleCryptoService } from '@app/services';
+import { Component, computed, inject, input } from '@angular/core';
+import { Article, ArticleSection } from '@app/models';
+import { MarkdownParserService, RenderContentsTableLink } from '@app/markdown';
+import { SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -9,73 +11,34 @@ import { BundleCryptoService } from '@app/services';
   templateUrl: './lore-article.component.html',
   styleUrls: ['./lore-article.component.scss'],
 })
-export class LoreArticleComponent implements OnChanges {
-  private readonly bundleCryptoService: BundleCryptoService = inject(BundleCryptoService);
+export class LoreArticleComponent {
+  protected readonly markdownParserService: MarkdownParserService = inject(MarkdownParserService);
+  protected readonly router: Router = inject(Router);
 
-  @Input() article!: Article;
+  public readonly article = input.required<Article>();
+  protected readonly articleParseResults = computed<[SafeHtml[], Iterable<RenderContentsTableLink>] | null>(() => {
+    const article = this.article();
+    return this.markdownParserService.parseArticle(article);
+  })
+  protected readonly articleHtml = computed<{ section: ArticleSection, html: SafeHtml }[]>(() => {
+    const article = this.article();
+    const [parseHtmlResults] = this.articleParseResults() ?? [];
 
-  constructor() {
+    return parseHtmlResults
+      ?.map((html, i) => ({
+        section: article.sections[i],
+        html,
+      }))
+      .filter((s) => s.html)
+      ?? [];
+  });
+  protected readonly articleContents = computed<RenderContentsTableLink[] | undefined>(() => {
+    const [, contents] = this.articleParseResults() ?? [];
 
+    return contents ? Array.from(contents) : undefined;
+  });
 
-    effect(() => {
-
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['article'] && this.article) {
-      // if (this.hasKey()) this.decryptAllPrivate();
-    }
-  }
-
-  //@ts-ignore
-  async lockAndSave() {
-    //
-    // if (this.article.accessTags === ContentAccess.PRIVATE) {
-    //   delete this.article.enc;
-    //   const str = JSON.stringify(this.article);
-    //   const bundle = await this.cryptoService.encrypt('', str);
-    //
-    //   return {
-    //     id: this.article.id,
-    //     access: ContentAccess.PRIVATE,
-    //     enc: bundle
-    //   }
-    // }
-    //
-    // const out: ArticleSection[] = [];
-    // for (const section of this.article.sections!) {
-    //   if (section.accessTags === ContentAccess.PUBLIC) {
-    //     out.push({ accessTags: ContentAccess.PUBLIC, text: section.text || '' });
-    //     continue;
-    //   }
-    //
-    //   if (section.enc) {
-    //     out.push({ accessTags: ContentAccess.PRIVATE, enc: section.enc });
-    //     continue;
-    //   }
-    //
-    //   if (!this.hasKey()) {
-    //     alert('Set DM Passphrase in the header first.');
-    //     return;
-    //   }
-    //
-    //   const str = JSON.stringify(section);
-    //   const bundle = await this.cryptoService.encrypt('', str);
-    //   out.push({ accessTags: ContentAccess.PRIVATE, enc: bundle });
-    // }
-    //
-    // this.article.sections = out;
-  }
-
-  // async decryptAllPrivate() {
-  //   for (const section of this.article.sections!) {
-  //     if (section.accessTags === ContentAccess.PRIVATE && !section.decrypted && section.enc && this.hasKey() && !section.text) {
-  //       try {
-  //         section.decrypted = true;
-  //         section.text = await this.cryptoService.decrypt('', section.enc);
-  //       } catch {}
-  //     }
-  //   }
-  // }
+  protected readonly currentUrlWithoutFragment = computed(() => {
+    return this.router.url.split('#')[0];
+  });
 }

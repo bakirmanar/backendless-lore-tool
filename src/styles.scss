@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+@use './scss/components';
+@use './scss/variables.scss';
 
 html,
 body {
@@ -6,21 +8,31 @@ body {
 }
 
 html {
-  color-scheme: light dark;
+  color-scheme: light;
+  @include variables.includeVariables();
   @include mat.theme((
     color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$orange-palette,
+      primary: mat.$orange-palette,
+      tertiary: mat.$violet-palette,
     ),
     typography: Roboto,
     density: 0
   ));
 }
 
+@include components.toolbarOverrides();
+@include components.formFieldOverrrides();
+
 html {
   background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }
 
 * {
   box-sizing: border-box;
+}
+
+.layout-container {
+  width: var(--app-page-container-width);
+  margin: var(--app-gap-m) auto 0;
 }

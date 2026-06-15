@@ -1,14 +1,12 @@
 .page-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--app-gap-m);
+  margin-bottom: var(--app-gap-m);
 }
 
 .spacer {
   flex: 1;
 }
 
-.article-page {
-  padding: 16px 0;
-}
 

@@ -1,0 +1,11 @@
+﻿@mixin formFieldOverrrides {
+  :root {
+    --app-input-height: 24px;
+    --mat-form-field-container-vertical-padding: var(--app-gap-m);
+    --mat-form-field-container-height: calc(var(--app-input-height) + (var(--mat-form-field-container-vertical-padding) * 2));
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    height: 0;
+  }
+}
