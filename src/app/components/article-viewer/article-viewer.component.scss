@@ -1,4 +1,4 @@
-.lore-article-content-wrapper {
+.article-viewer-content-wrapper {
   z-index: auto;
   display: flex;
   align-items: start;
@@ -6,7 +6,7 @@
   overflow: visible;
 }
 
-.lore-article-side-nav {
+.article-viewer-side-nav {
   position: sticky;
   top: var(--mat-toolbar-standard-height);
   bottom: auto;

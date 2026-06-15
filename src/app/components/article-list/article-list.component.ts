@@ -3,7 +3,7 @@ import { Component, computed, inject, Signal, ViewEncapsulation, } from '@angula
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { ArticleType, Article } from '@app/models';
-import { KeyCacheService, StateService } from '@app/services';
+import { StateService } from '@app/services';
 import { Router } from '@angular/router';
 
 @Component({
@@ -34,8 +34,14 @@ export class ArticleListComponent {
   protected readonly search = new FormControl<string>('', { nonNullable: true });
   protected readonly typeFilter = new FormControl<ArticleType | null>(null);
 
-  private readonly searchValue = toSignal(this.search.valueChanges.pipe(startWith(this.search.value)), { initialValue: this.search.value });
-  private readonly typeValue = toSignal(this.typeFilter.valueChanges.pipe(startWith(this.typeFilter.value)), { initialValue: this.typeFilter.value });
+  private readonly searchValue = toSignal(
+    this.search.valueChanges.pipe(startWith(this.search.value)),
+    { initialValue: this.search.value }
+  );
+  private readonly typeValue = toSignal(
+    this.typeFilter.valueChanges.pipe(startWith(this.typeFilter.value)),
+    { initialValue: this.typeFilter.value }
+  );
 
   goCreate() {
     this.router.navigate(['/create']);

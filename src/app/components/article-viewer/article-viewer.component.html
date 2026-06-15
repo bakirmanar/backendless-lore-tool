@@ -1,5 +1,5 @@
-﻿<mat-drawer-container class="lore-article-content-wrapper" autosize hasBackdrop="false">
-  <mat-drawer #drawer class="lore-article-side-nav" mode="over">
+<mat-drawer-container class="article-viewer-content-wrapper" autosize hasBackdrop="false">
+  <mat-drawer #drawer class="article-viewer-side-nav" mode="over">
     @if (articleContents()) {
       @for (chunk of articleContents(); track $index) {
         <div [style.margin-left]="20 * (chunk.depth - 1) + 'px'">

@@ -6,12 +6,12 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-lore-article',
+  selector: 'app-article-viewer',
   standalone: false,
-  templateUrl: './lore-article.component.html',
-  styleUrls: ['./lore-article.component.scss'],
+  templateUrl: './article-viewer.component.html',
+  styleUrls: ['./article-viewer.component.scss'],
 })
-export class LoreArticleComponent {
+export class ArticleViewerComponent {
   protected readonly markdownParserService: MarkdownParserService = inject(MarkdownParserService);
   protected readonly router: Router = inject(Router);
 

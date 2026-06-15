@@ -5,6 +5,7 @@
         <mat-icon>arrow_back</mat-icon>
         Back
       </button>
+
       <span class="spacer"></span>
 
       @if (stateService.authorizedAsOwner()) {
@@ -15,7 +16,7 @@
       }
     </header>
 
-    <app-lore-article [article]="article()!"></app-lore-article>
+    <app-article-viewer [article]="article()!"></app-article-viewer>
   </section>
 } @else {
   <div class="muted">Article not found.</div>

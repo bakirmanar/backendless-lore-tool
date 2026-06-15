@@ -5,17 +5,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
 import {
-  LoreArticleComponent,
+  ArticleViewerComponent,
   LoreArticleEditorComponent,
   ArticlePageComponent,
   AppHeaderComponent,
   ArticleListComponent,
   PassphraseDialogComponent,
   LayoutWithNavComponent,
-  LayoutWithoutNavComponent
+  LayoutWithoutNavComponent,
 } from '@app/components';
 import { LoadBundlePage } from '@app/pages';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,7 +31,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 @NgModule({
   declarations: [
     AppComponent,
-    LoreArticleComponent,
+    ArticleViewerComponent,
     LoreArticleEditorComponent,
     ArticlePageComponent,
     AppHeaderComponent,
@@ -55,13 +55,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSelectModule,
     MatListModule,
     MatCardModule,
-    MatSidenavModule
+    MatSidenavModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
