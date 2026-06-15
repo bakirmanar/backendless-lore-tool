@@ -1,5 +1,5 @@
 export * from './article-viewer/article-viewer.component';
-export * from './lore-article-editor/lore-article-editor.component';
+export * from './article-editor/article-editor.component';
 export * from './app-header/app-header.component';
 export * from './app-header/passphrase-dialog.component';
 export * from './article-page/article-page.component';

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-  LoreArticleEditorComponent,
+  ArticleEditorComponent,
   ArticlePageComponent,
   ArticleListComponent,
   LayoutWithNavComponent,
@@ -17,8 +17,8 @@ const routes: Routes = [
     children: [
       { path: '', component: ArticleListComponent, canActivate: [HasBundleGuard] },
       { path: 'article/:id', component: ArticlePageComponent, canActivate: [HasBundleGuard] },
-      { path: 'edit/:id', component: LoreArticleEditorComponent, canActivate: [HasBundleGuard] },
-      { path: 'create', component: LoreArticleEditorComponent, canActivate: [HasBundleGuard] },
+      { path: 'edit/:id', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
+      { path: 'create', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
     ]
   },
   {
