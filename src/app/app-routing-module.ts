@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
   ArticleEditorComponent,
-  ArticlePageComponent,
   ArticleListComponent,
   LayoutWithNavComponent,
   LayoutWithoutNavComponent
 } from '@app/components';
 import { HasBundleGuard } from '@app/guards';
-import { LoadBundlePage } from '@app/pages';
+import { ArticlePageComponent, LoadBundlePage } from '@app/pages';
 
 const routes: Routes = [
   {

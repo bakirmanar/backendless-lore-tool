@@ -6,15 +6,14 @@ import { AppRoutingModule } from './app-routing-module';
 import { AppComponent } from './app.component';
 import {
   ArticleViewerComponent,
-  LoreArticleEditorComponent,
-  ArticlePageComponent,
+  ArticleEditorComponent,
   AppHeaderComponent,
   ArticleListComponent,
   PassphraseDialogComponent,
   LayoutWithNavComponent,
   LayoutWithoutNavComponent,
 } from '@app/components';
-import { LoadBundlePage } from '@app/pages';
+import { ArticlePageComponent, LoadBundlePage } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +32,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
   declarations: [
     AppComponent,
     ArticleViewerComponent,
-    LoreArticleEditorComponent,
+    ArticleEditorComponent,
     ArticlePageComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
