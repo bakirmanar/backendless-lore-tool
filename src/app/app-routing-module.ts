@@ -7,7 +7,7 @@ import {
   LayoutWithoutNavComponent
 } from '@app/components';
 import { HasBundleGuard } from '@app/guards';
-import { ArticlePageComponent, LoadBundlePage } from '@app/pages';
+import { LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     component: LayoutWithNavComponent,
     children: [
       { path: '', component: ArticleListComponent, canActivate: [HasBundleGuard] },
-      { path: 'article/:id', component: ArticlePageComponent, canActivate: [HasBundleGuard] },
+      { path: 'article/:id', component: ViewArticlePageComponent, canActivate: [HasBundleGuard] },
       { path: 'edit/:id', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
       { path: 'create', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
     ]

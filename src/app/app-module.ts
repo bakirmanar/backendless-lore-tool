@@ -13,7 +13,7 @@ import {
   LayoutWithNavComponent,
   LayoutWithoutNavComponent,
 } from '@app/components';
-import { ArticlePageComponent, LoadBundlePage } from '@app/pages';
+import { LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +33,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     AppComponent,
     ArticleViewerComponent,
     ArticleEditorComponent,
-    ArticlePageComponent,
+    ViewArticlePageComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
     ArticleListComponent,
