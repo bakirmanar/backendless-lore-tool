@@ -27,6 +27,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { provideHttpClient } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatListModule,
     MatCardModule,
     MatSidenavModule,
+    TextFieldModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
