@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-  ArticleEditorComponent,
   ArticleListComponent,
   LayoutWithNavComponent,
   LayoutWithoutNavComponent
 } from '@app/components';
 import { HasBundleGuard } from '@app/guards';
-import { LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
+import { EditArticlePageComponent, LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
 
 const routes: Routes = [
   {
@@ -16,8 +15,8 @@ const routes: Routes = [
     children: [
       { path: '', component: ArticleListComponent, canActivate: [HasBundleGuard] },
       { path: 'article/:id', component: ViewArticlePageComponent, canActivate: [HasBundleGuard] },
-      { path: 'edit/:id', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
-      { path: 'create', component: ArticleEditorComponent, canActivate: [HasBundleGuard] },
+      { path: 'edit/:id', component: EditArticlePageComponent, canActivate: [HasBundleGuard] },
+      { path: 'create', component: EditArticlePageComponent, canActivate: [HasBundleGuard] },
     ]
   },
   {

@@ -28,10 +28,10 @@ type ArticleForm = FormGroup<{
 export class ArticleEditorComponent {
   private readonly stateService: StateService = inject(StateService);
 
+  // Outputs with every form change. Always create a copy of output if outside modifications are needed
   public readonly articleChange = output<Article>();
 
-  // readonly article = input<Article | null>({ accessTags: [], sections: []} as unknown as Article);
-  protected readonly article = input<Article | null>(this.stateService.articles()[2]!);
+  public readonly article = input<Article | null>(null);
   protected readonly accessTags = computed(() => this.stateService.state.ownerData?.accessTags ?? []);
 
   protected readonly articleTypes: ArticleType[] = Object.values(ArticleType);
@@ -132,22 +132,6 @@ export class ArticleEditorComponent {
   }
 
   private buildArticleFromForm(): Article | null {
-    if (!this.article()) {
-      return null;
-    }
-
-    const value = this.articleForm.getRawValue();
-
-    return {
-      id: value.id,
-      title: value.title,
-      type: value.type ?? undefined,
-      accessTags: [...value.accessTags],
-      sections: value.sections.map((section) => ({
-        id: section.id,
-        accessTags: [...section.accessTags],
-        content: section.content,
-      })),
-    };
+    return this.article() ? this.articleForm.getRawValue() as never as Article : null;
   }
 }
