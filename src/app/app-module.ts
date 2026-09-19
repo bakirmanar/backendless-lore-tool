@@ -13,7 +13,7 @@ import {
   LayoutWithNavComponent,
   LayoutWithoutNavComponent,
 } from '@app/components';
-import { LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
+import { EditArticlePageComponent, LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,6 +27,7 @@ import { MatCardModule } from '@angular/material/card';
 import { provideHttpClient } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     ArticleViewerComponent,
     ArticleEditorComponent,
     ViewArticlePageComponent,
+    EditArticlePageComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
     ArticleListComponent,
@@ -56,6 +58,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     MatListModule,
     MatCardModule,
     MatSidenavModule,
+    MatTabsModule,
     TextFieldModule,
   ],
   providers: [
