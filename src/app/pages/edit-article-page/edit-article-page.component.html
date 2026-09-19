@@ -19,8 +19,8 @@
       </button>
     </header>
 
-    <mat-tab-group>
-      <mat-tab label="Edit">
+    <mat-tab-group preserveContent="true">
+      <mat-tab label="Edit" >
         <div class="tab-content">
           <app-article-editor
             [article]="initialDraft()"

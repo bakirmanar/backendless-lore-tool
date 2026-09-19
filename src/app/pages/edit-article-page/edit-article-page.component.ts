@@ -9,7 +9,6 @@ type EditArticlePageMode = 'create' | 'edit';
 
 // TODO
 //  1. Styles
-//  2. After switching to preview the native history of text edits is erased because textarea is being recreated
 
 @Component({
   selector: 'app-edit-article-page',
