@@ -22,14 +22,15 @@ export class StateImportExportService {
       return;
     }
 
-    if (!passphrase) {
-      this.stateService.state = encryptedBundleToAppState(bundle);
-    } else {
-      const decryptedData = await this.bundleCryptoService.decrypt(bundle, passphrase );
+    if (passphrase) {
+      const decryptedData = await this.bundleCryptoService.decrypt(bundle, passphrase);
       if (decryptedData) {
         this.stateService.state = decryptedData;
+        return;
       }
     }
+
+    this.stateService.state = encryptedBundleToAppState(bundle);
   }
 
   async importFromLocalFile() {

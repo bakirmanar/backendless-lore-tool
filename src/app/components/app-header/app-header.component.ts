@@ -1,9 +1,8 @@
 import { firstValueFrom } from 'rxjs';
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {  StateImportExportService, StateService } from '@app/services';
-import { PassphraseDialogComponent } from '@app/components/app-header/passphrase-dialog.component';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService, StateImportExportService, StateService } from '@app/services';
+import { PassphraseDialogComponent } from '@app/components';
 
 @Component({
   selector: 'app-header',

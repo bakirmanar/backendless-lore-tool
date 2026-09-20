@@ -3,7 +3,6 @@ export * from './crypto/bundle-crypto.service';
 export * from './storage/storage.service';
 export * from './storage/local-storage.adapter';
 export * from './state.service';
-export * from './key-cache.service';
 export * from './auth.service';
 export * from './state-import-export.service';
 export * from './file.service';
