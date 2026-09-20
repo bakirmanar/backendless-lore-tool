@@ -10,6 +10,6 @@ export class BundleApi {
   private readonly httpClient = inject(HttpClient);
 
   async getBundle(): Promise<EncryptedBundle> {
-    return firstValueFrom(this.httpClient.get<EncryptedBundle>('/bundle.json'))
+    return firstValueFrom(this.httpClient.get<EncryptedBundle>('bundle.json'))
   }
 }
