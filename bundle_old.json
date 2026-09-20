@@ -1,0 +1,97 @@
+﻿{
+  "version": 1,
+  "accessTags": {
+    "3bb7c76d-939b-4593-9018-bf4c17fbc328": {
+      "id": "3bb7c76d-939b-4593-9018-bf4c17fbc328",
+      "name": "Greywatch"
+    },
+    "d48ebdd5-18da-47e8-a1f9-f495f9a58598": {
+      "id": "d48ebdd5-18da-47e8-a1f9-f495f9a58598",
+      "name": "New era"
+    }
+  },
+  "users": [
+    {
+      "id": "9cf0a9e1-6937-4708-b953-37ab735d2d4c",
+      "name": "OWNER",
+      "salt": "XKnsKrH3hA/rjSqkdS4BsA==",
+      "nonce": "jF9JHycocoQlOojp",
+      "ct": "Est5FUKZndgeCu4AUZP3PJV3I2D/vrECTpBJaOFVRJL12PWeC7CuByn1KU2UmdFfJfEPDC/qQm+1IFLWkNXkVNprx8a2ifjOgxJ8/4HJCu42bapTPWuqd9E3QuzbRubDb4cZZX6d1C04R4IuwU2WGe3TgE4xfabLhdc0hcXIrZRCCeUWoN2r5fh9ysuocyThBLYcOEDdYP3X4KaLoD0SZ/j7CKHyS/cHAb5E1K1tnx7fwF7gIcpgaC6/dxKeVf+c6a509z7zwXhJB5FfF8+ztxOdENsWVJzTx0xoH1N0086b6s/xTRSDEFS+cBenSLGOyF9YPwEzbn+BfYyae3ZtDwmDi6Oe/jUnlBkCCgYR8maCOu52BbVNh8IhyGAuKTVctLwemAbmRXp1qXLANNaZMFVNy5rf2xsXqxBDzw4Sxu8Z2kIBHom6ppgl630Cm1EyYlHLgJ+gFDLdvyrqllNdml19Ic6+rQRKAeSRj1Vaz4CfHJDiSolXdzWOnykem0hkUPdm/3UX2UdfV/4H+Hddq7uP2RrRzB3u+qi8ee+VrPunwcG5tKKD+vdNhhEwIn75QWWLeylDGHskmRh4wZevZRLkbB9ssWLtpI/BywhFbM37iW04Qc8SkoJ2Emr4oqVQfXM79qL8mwL5fc/jGcFxqSktpEmNCl97m3TPz/and1pN9Kw1UZejODR5ZRP7eO0PTylzd1l6QfjvWX595BF8EIbOeBQFl8c/2EraKq67/aR3TR/UQnCj/csLkmwVnqFUv7JhDdCpOCdPXwO7o/FJrpQ1LsMmaml6LXv7iiTF8t/wI2DhWG1ghNswN2WQ20OXB630lSU2e/cGXKKU/3cPmlOMScWkKYX30rIiiEn3oQ=="
+    },
+    {
+      "id": "9fa83402-f8bf-4862-8ec3-7801fca73d8e",
+      "name": "Кукумявки",
+      "salt": "UtgzJBr2VDgLhhaQozVbrA==",
+      "nonce": "LhegTKOhGagYwpnp",
+      "ct": "nU9r395fErt10GbLbGQDeGKrOrD/JeHCYgZRED4rrwZR9PCQtr3DXRsCj0Keeuq5GsPDzEOjqBu+DMgphy3J/jUXReIOr0Cri4HjGdwWE2+VH/Ms5HC16vnclDKBojx5jnOX94o2lY8NOBx6X35d/Jl573wx08EwDyb+sinU0coH6sbbqKFSzxM1zd/0xV4="
+    }
+  ],
+  "articles": [
+    {
+      "id": "1d027b77-38c7-4b3c-af5b-5d696672c96d",
+      "title": "The old times",
+      "accessTags": [],
+      "sections": [
+        {
+          "id": "58f20679-28db-4642-9688-e5ec705def3e",
+          "accessTags": [],
+          "content": "The very bad things happened here"
+        },
+        {
+          "id": "section:1d027b77-38c7-4b3c-af5b-5d696672c96d:cdf9eae8-a248-47db-94cd-0aaf2ce3b8d1",
+          "access": [
+            "3bb7c76d-939b-4593-9018-bf4c17fbc328"
+          ],
+          "nonce": "7GY7WOBfNtzDFKId",
+          "ct": "3wUdt0FDKvraSZDs1nTLAQQa3Dc8iPt6LFntR+WQi9MBGPnw90bbK/FyulMIXDXdfjWCY+zhFYW0s5Q95ayJogN3tN4iLBMuklS40CArIdxtxWb2zqinOU5I7oYsHbF0LuPkPIp6IlIsmvC1MTxLLNxSnJg/+PkcBqMw/u/rdyuMHPUoGDJBbu8J1WUDNbXshr14/fpZ",
+          "dek": {
+            "nonce": "YD1eSruzm3dxf+l7",
+            "wrappedKey": "4zNfhgpivvH7VGjo7cnZrfeHu0BNpaEk0/Ex6ZqQgdxBJJue1lxGMSsTXzc1zi4a"
+          }
+        }
+      ]
+    },
+    {
+      "id": "15b14d96-d62f-4cbf-a9f2-f960fc6ff898",
+      "meta": {
+        "id": "meta:15b14d96-d62f-4cbf-a9f2-f960fc6ff898",
+        "access": [
+          "d48ebdd5-18da-47e8-a1f9-f495f9a58598"
+        ],
+        "nonce": "8VwjlgzihF6o8CbM",
+        "ct": "A3zDsGWrPZB1W7F+FldaAhgE2eJZ37rkuktxazhv/IG7kvw=",
+        "dek": {
+          "nonce": "duOjrvsHMXjIX8l2",
+          "wrappedKey": "UQBB/iEkTo8TC+4PP43WKm0NLIdCxsJ3PzGAqAViKmJIKmgHJ8ueoZ6XdpJHInOc"
+        }
+      },
+      "sections": [
+        {
+          "id": "section:15b14d96-d62f-4cbf-a9f2-f960fc6ff898:6a6fffaa-6cbd-405f-92a3-e7ecec478175",
+          "access": [
+            "d48ebdd5-18da-47e8-a1f9-f495f9a58598"
+          ],
+          "nonce": "aDU2aSjZe2sXT7XM",
+          "ct": "/TizRrJ0atyg+iLe3+cMwHkzRJHFJcDUJP6fI8+mKbYit0ZsboZqQTbYeFQvTlrfADUQgJbkJy3E08SzfirgjSU5A7WiLKvi28ZiCaCrMKbxXYS1y6CCU2lAJJrrXWU3muk816jrMN/1ust9jjCbD+oR7HUzWfLRIQMl9UbVxw==",
+          "dek": {
+            "nonce": "3s9KcPzhMralByrh",
+            "wrappedKey": "pqXh6h95DDRex9A6WLzbkQZ2Y3JaNGIKs1cwQu9aJAK7HJ2omqlS9/QdjyXv9oH3"
+          }
+        },
+        {
+          "id": "section:15b14d96-d62f-4cbf-a9f2-f960fc6ff898:c41e014d-509f-470c-a452-65361026d06b",
+          "access": [
+            "d48ebdd5-18da-47e8-a1f9-f495f9a58598",
+            "3bb7c76d-939b-4593-9018-bf4c17fbc328"
+          ],
+          "nonce": "6zOBbpFHMKTp7sa6",
+          "ct": "TwOe1RXg4k+3dwucPTvEiUpaxaGdxWCAaWADAJdO3PKrBGfthLbobvds5+++5BBfTs2V1ckN9On8ouwO/nDSmmimEvsY69XYa1BV+NcbN6zJbJRwHLM3BgdXeJrFT+ER9HdoJHUTtR507Ri7wV78gWZnFN3JHAWA4Ges2CWrgFxzaVuq7xHtKj/VC3nRSIAGtR7KS8RgMAsXby78mvi6",
+          "dek": {
+            "nonce": "wxBEPQ/Syap4cF95",
+            "wrappedKey": "u0QbBWPRTctctgL+yDYuvO49vJZFK6KM1wqQ3WZStGsIIAL6hT2RRCU6vaiI6lWB"
+          }
+        }
+      ]
+    }
+  ]
+}
