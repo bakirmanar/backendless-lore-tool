@@ -15,15 +15,21 @@
   </mat-form-field>
 </section>
 
-
 @for (a of filtered(); track a.id) {
-  <a mat-list-item [routerLink]="['/article', a.id]">
+  <a mat-list-item class="article-list-item" [routerLink]="['/article', a.id]">
     <mat-card>
-      <mat-card-content>{{a.title}}</mat-card-content>
+      <mat-card-content>
+        {{a.title}}
+
+        @if (stateService.authorizedAsOwner()) {
+          <button mat-icon-button (click)="removeArticle(a.id)">
+            <mat-icon>remove</mat-icon>
+          </button>
+        }
+      </mat-card-content>
     </mat-card>
   </a>
 }
-
 
 @if (stateService.authorizedAsOwner()) {
   <button mat-fab color="primary" class="fab" aria-label="Create article" (click)="goCreate()">

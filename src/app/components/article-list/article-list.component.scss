@@ -8,3 +8,12 @@ app-article-list {
   align-items: flex-end;
   margin: 12px 0 8px;
 }
+
+.article-list-item {
+
+  mat-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

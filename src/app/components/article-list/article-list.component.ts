@@ -46,4 +46,8 @@ export class ArticleListComponent {
   goCreate() {
     this.router.navigate(['/create']);
   }
+
+  protected removeArticle(articleId: Article['id']): void {
+    this.stateService.removeArticle(articleId);
+  }
 }
