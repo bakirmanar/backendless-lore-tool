@@ -4,6 +4,8 @@
   <span class="spacer"></span>
 
   @if (stateService.authorizedAsOwner()) {
+    <a mat-button routerLink="/users">Users</a>
+    <a mat-button routerLink="/tags">Tags</a>
     <button mat-button (click)="exportJSON()">&#10515; Export JSON</button>
     <button mat-button (click)="importJSON()">&#10514; Import JSON</button>
   }

@@ -25,13 +25,7 @@
 - Tips: use `ng test --code-coverage` to generate coverage.
 
 ## Coding Style & Naming Conventions
-- TypeScript with 2‑space indentation and single quotes (see `prettier` in `package.json`).
-- File names: kebab‑case (e.g., `lore-card.component.ts`).
-- Classes/Components/Services: PascalCase (e.g., `LoreCardComponent`, `BundleCryptoService`).
-- Re‑export barrel files allowed in `index.ts` within folders.
-- Dont use `any` type.
-- Create types for all business related instances, enumerations.
-- Run Prettier before commits (configure your editor to format on save).
+- Read and follow [CODE_STYLE.md](./CODE_STYLE.md) before changing code. It records repository-specific rules and takes precedence over conflicting examples in existing code or formatter defaults.
 
 ## Testing Guidelines
 - Framework: Jasmine; runner: Karma. Place tests as `*.spec.ts` beside code.

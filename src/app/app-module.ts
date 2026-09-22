@@ -13,7 +13,7 @@ import {
   LayoutWithNavComponent,
   LayoutWithoutNavComponent,
 } from '@app/components';
-import { EditArticlePageComponent, EditTagsPageComponent, LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
+import { EditArticlePageComponent, EditTagsPageComponent, LoadBundlePage, ViewArticlePageComponent, UsersPageComponent, EditUserPageComponent, DeleteUserDialogComponent } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';

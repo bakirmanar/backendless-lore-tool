@@ -1,0 +1,33 @@
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+  padding-bottom: 104px;
+}
+
+.user-link {
+  color: inherit;
+  text-decoration: none;
+  border-radius: 12px;
+
+  mat-card {
+    height: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  &:hover mat-card {
+    background: var(--mat-sys-surface-container);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 4px;
+  }
+}
+
+.add-user {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2;
+}

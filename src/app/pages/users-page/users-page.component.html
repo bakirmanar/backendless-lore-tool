@@ -1,0 +1,44 @@
+@if (stateService.authorizedAsOwner()) {
+  <a mat-button routerLink="/"> <mat-icon>arrow_back</mat-icon> Articles </a>
+  <h1>Users</h1>
+  <p>Manage users and the tags that give them access to your lore.</p>
+  <div class="users-grid">
+    @for (user of users(); track user.id) {
+      <a
+        class="user-link"
+        [routerLink]="['/users', user.id, 'edit']"
+        [attr.aria-label]="'Edit user ' + user.name"
+      >
+        <mat-card appearance="outlined">
+          <mat-card-header>
+            <mat-icon mat-card-avatar>{{
+              user.isOwner ? 'admin_panel_settings' : 'person'
+            }}</mat-icon>
+            <mat-card-title>{{ user.name }}</mat-card-title>
+            <mat-card-subtitle>{{
+              user.isOwner ? 'Owner · Full access' : 'User'
+            }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            @if (!user.isOwner) {
+              @if (user.tags.length) {
+                <mat-chip-set aria-label="Access tags">
+                  @for (tag of user.tags; track $index) {
+                    <mat-chip>{{ tag }}</mat-chip>
+                  }
+                </mat-chip-set>
+              } @else {
+                <p>No tags · Public content only</p>
+              }
+            }
+          </mat-card-content>
+        </mat-card>
+      </a>
+    } @empty {
+      <p>No users yet. Add a user to get started.</p>
+    }
+  </div>
+  <a mat-fab extended class="add-user" routerLink="/users/create">
+    <mat-icon>add</mat-icon> Add user
+  </a>
+}

@@ -1,0 +1,79 @@
+@if (authorizedAsOwner()) {
+  <a mat-button routerLink="/users"><mat-icon>arrow_back</mat-icon> Users</a>
+  @if (userId() && !user()) {
+    <h1>User not found</h1>
+    <p>This user may have been deleted. Return to Users to choose another user.</p>
+  } @else {
+    <h1>{{ userId() ? 'Edit user' : 'Create user' }}</h1>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          @if (isOwner()) {
+            <p><strong>Owner</strong> · Full access to all content.</p>
+          }
+          <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="name" autocomplete="off" />
+            <mat-error>Enter a username.</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ userId() ? 'New password' : 'Password' }}</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              autocomplete="new-password"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="showPassword.set(!showPassword())"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword()"
+            >
+              <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-hint>{{
+              userId()
+                ? 'Leave blank to keep the current password.'
+                : 'Use a unique password for this user.'
+            }}</mat-hint>
+            <mat-error>Enter a password.</mat-error>
+          </mat-form-field>
+          @if (!isOwner()) {
+            <mat-form-field appearance="outline">
+              <mat-label>Access tags</mat-label>
+              <mat-select formControlName="access" multiple>
+                @for (tag of tags(); track tag.id) {
+                  <mat-option [value]="tag.id">{{ tag.name }}</mat-option>
+                }
+              </mat-select>
+              <mat-hint>Without tags, this user can only see public content.</mat-hint>
+            </mat-form-field>
+            @if (!tags().length) {
+              <p>No tags available. <a routerLink="/tags">Manage access tags</a></p>
+            }
+          }
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <a mat-button routerLink="/users" [disabled]="busy()">Cancel</a>
+          <button mat-flat-button type="submit" [disabled]="busy()">
+            {{ busy() ? 'Please wait…' : 'Save user' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+    @if (userId() && !isOwner()) {
+      <button
+        mat-stroked-button
+        class="delete-user"
+        type="button"
+        [disabled]="busy()"
+        (click)="remove()"
+      >
+        <mat-icon>delete</mat-icon> Delete user
+      </button>
+    }
+  }
+}

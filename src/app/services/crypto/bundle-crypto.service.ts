@@ -13,6 +13,7 @@ import {
   EncryptedNode,
   EncryptedUser,
   OwnerBundleData,
+  OWNER_USERNAME,
   PublicArticle,
   User
 } from '@app/models';
@@ -69,7 +70,7 @@ export class BundleCryptoService {
     // 3) Encrypt users (store only the tag keys they are allowed)
     const encryptedUsers: EncryptedUser[] = [];
     for (let user of state.ownerData.users as BundledUser[]) {
-      if (user.name == 'OWNER') {
+      if (user.name === OWNER_USERNAME) {
         user = {
           ...user,
           access: state.ownerData.accessTags.map((tag) => tag.id),
