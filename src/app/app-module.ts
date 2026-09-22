@@ -1,4 +1,4 @@
-﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -13,7 +13,7 @@ import {
   LayoutWithNavComponent,
   LayoutWithoutNavComponent,
 } from '@app/components';
-import { EditArticlePageComponent, LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
+import { EditArticlePageComponent, EditTagsPageComponent, LoadBundlePage, ViewArticlePageComponent } from '@app/pages';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +28,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ArticleEditorComponent,
     ViewArticlePageComponent,
     EditArticlePageComponent,
+    EditTagsPageComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
     ArticleListComponent,
@@ -59,6 +61,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatSidenavModule,
     MatTabsModule,
+    MatSnackBarModule,
     TextFieldModule,
   ],
   providers: [

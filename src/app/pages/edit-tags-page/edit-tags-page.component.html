@@ -1,0 +1,42 @@
+@if (authorizedAsOwner()) {
+  <h1>Edit Access Tags</h1>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <p>Tags used by articles, sections, or users cannot be deleted.</p>
+        <div formArrayName="tags">
+          @for (tag of tags.controls; track tag.controls.id.value; let index = $index) {
+            <div [formGroupName]="index">
+              <mat-form-field appearance="outline">
+                <mat-label>Tag name</mat-label>
+                <input matInput formControlName="name" />
+                <mat-error>Enter a tag name.</mat-error>
+              </mat-form-field>
+              <button
+                mat-icon-button
+                type="button"
+                [attr.aria-label]="'Delete tag ' + tag.controls.name.value"
+                (click)="removeTag(index)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          } @empty {
+            <p>No access tags yet.</p>
+          }
+        </div>
+        <button mat-stroked-button type="button" (click)="addTag()">
+          <mat-icon>add</mat-icon>
+          Add Tag
+        </button>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button type="button" (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+          <mat-icon>save</mat-icon>
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+}
