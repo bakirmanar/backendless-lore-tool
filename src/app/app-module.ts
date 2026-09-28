@@ -27,8 +27,10 @@ import { MatCardModule } from '@angular/material/card';
 import { provideHttpClient } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ViewArticlePageComponent,
     EditArticlePageComponent,
     EditTagsPageComponent,
+    UsersPageComponent,
+    EditUserPageComponent,
+    DeleteUserDialogComponent,
     AppHeaderComponent,
     PassphraseDialogComponent,
     ArticleListComponent,
@@ -62,7 +67,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSidenavModule,
     MatTabsModule,
     MatSnackBarModule,
+    MatChipsModule,
     TextFieldModule,
+    OverlayModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
