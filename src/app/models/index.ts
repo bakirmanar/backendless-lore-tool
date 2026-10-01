@@ -6,3 +6,4 @@ export * from './content-access.model';
 export * from './user.model';
 export * from './storage.model';
 export * from './file.model';
+export * from './completion.model';

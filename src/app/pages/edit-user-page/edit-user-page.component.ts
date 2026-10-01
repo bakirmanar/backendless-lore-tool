@@ -47,7 +47,6 @@ export class EditUserPageComponent {
     effect(() => {
       const user = this.user();
       this.form.reset({ name: user?.name ?? '', password: '', access: [...(user?.access ?? [])] });
-      console.log('***', this.user()?.name, this.isOwner())
       if (this.isOwner()) {
         this.form.controls.name.disable();
       } else {

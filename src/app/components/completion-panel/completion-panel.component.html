@@ -1,0 +1,30 @@
+<div
+  class="completion-panel"
+  [id]="panelId()"
+  role="listbox"
+  aria-label="Suggestions"
+  [attr.aria-busy]="loading()"
+  (mousedown)="$event.preventDefault()"
+>
+  @for (option of options(); track option.id; let index = $index) {
+    <mat-option
+      [id]="panelId() + '-option-' + index"
+      [tabIndex]="-1"
+      [class.completion-active]="index === activeIndex()"
+      (click)="optionSelected.emit(option)"
+    >
+      {{ option.label }}
+      @if (option.description) {
+        <small>{{ option.description }}</small>
+      }
+    </mat-option>
+  } @empty {
+    <div class="completion-message" role="status">
+      @if (loading()) {
+        Loading suggestions…
+      } @else {
+        No suggestions available
+      }
+    </div>
+  }
+</div>

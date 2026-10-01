@@ -6,3 +6,5 @@ export * from './state.service';
 export * from './auth.service';
 export * from './state-import-export.service';
 export * from './file.service';
+export * from './completion-session.service';
+export * from './textarea-editing.service';

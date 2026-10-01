@@ -5,3 +5,5 @@ export * from './app-header/passphrase-dialog.component';
 export * from './article-list/article-list.component';
 export * from './layout-with-nav/layout-with-nav.component';
 export * from './layout-without-nav/layout-without-nav.component';
+
+export * from './completion-panel/completion-panel.component';

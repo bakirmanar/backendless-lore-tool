@@ -16,6 +16,10 @@
     "module": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@app/directives": ["src/app/directives/index.ts"],
+      "@app/directives/*": ["src/app/directives/*"],
+      "@app/completion-providers": ["src/app/completion-providers/index.ts"],
+      "@app/completion-providers/*": ["src/app/completion-providers/*"],
       "@app/components": [
         "src/app/components/index.ts"
       ],
