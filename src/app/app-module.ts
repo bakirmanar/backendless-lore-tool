@@ -1,3 +1,4 @@
+import { TextCompletionDirective } from '@app/directives';
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,6 +8,7 @@ import { AppComponent } from './app.component';
 import {
   ArticleViewerComponent,
   ArticleEditorComponent,
+  CompletionPanelComponent,
   AppHeaderComponent,
   ArticleListComponent,
   PassphraseDialogComponent,
@@ -31,12 +33,14 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
     AppComponent,
     ArticleViewerComponent,
     ArticleEditorComponent,
+    CompletionPanelComponent,
     ViewArticlePageComponent,
     EditArticlePageComponent,
     EditTagsPageComponent,
@@ -51,6 +55,7 @@ import { MatChipsModule } from '@angular/material/chips';
     LoadBundlePage,
   ],
   imports: [
+    TextCompletionDirective,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -68,6 +73,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTabsModule,
     MatSnackBarModule,
     MatChipsModule,
+    MatOptionModule,
     TextFieldModule,
     OverlayModule,
   ],

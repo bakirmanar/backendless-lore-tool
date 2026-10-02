@@ -1,6 +1,8 @@
 import { Component, computed, effect, inject, input, output, ViewEncapsulation } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { ArticleCompletionProvider } from '@app/completion-providers';
+import { CompletionProvider } from '@app/models/completion.model';
 import { Article, ArticleSection, ArticleType, ContentAccessTagId } from '@app/models';
 import { StateService } from '@app/services';
 
@@ -27,6 +29,8 @@ type ArticleForm = FormGroup<{
 })
 export class ArticleEditorComponent {
   private readonly stateService: StateService = inject(StateService);
+  private readonly articleCompletionProvider = inject(ArticleCompletionProvider);
+  protected readonly completionProviders: readonly CompletionProvider[] = [this.articleCompletionProvider];
 
   // Outputs with every form change. Always create a copy of output if outside modifications are needed
   public readonly articleChange = output<Article>();
