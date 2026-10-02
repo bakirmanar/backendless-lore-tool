@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { StateService } from '@app/services/state.service';
+import { FileService, StateService, StorageService } from '@app/services';
 import { EncryptedBundle, FileType, StorageKeys } from '@app/models';
-import { BundleCryptoService } from '@app/services/crypto/bundle-crypto.service';
-import { FileService } from '@app/services/file.service';
-import { StorageService } from '@app/services/storage/storage.service';
-import { encryptedBundleToAppState } from '../transformers';
+import { BundleCryptoService } from '@app/crypto';
+import { encryptedBundleToAppState } from '@app/transformers';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +35,12 @@ export class StateImportExportService {
     try {
       // TODO password field?
       const fileContents = await this.fileService.readLocalFile(FileType.JSON);
-      const parsedObj = JSON.parse(fileContents ?? '') as EncryptedBundle;
-      const decryptedData = await this.bundleCryptoService.decrypt(parsedObj, 'dsa');
-      if (decryptedData) {
-        this.stateService.state = decryptedData;
+      const bundle = JSON.parse(fileContents ?? '') as EncryptedBundle;
+      const appState = encryptedBundleToAppState(bundle);
+
+      if (appState) {
+        this.storageService.set(StorageKeys.BUNDLE_DATA, bundle);
+        this.stateService.state = appState;
       }
     } catch {
       alert('Invalid JSON snapshot.');

@@ -79,6 +79,12 @@
       ],
       "@app/markdown/*": [
         "src/app/markdown/*"
+      ],
+      "@app/crypto": [
+        "src/app/crypto/index.ts"
+      ],
+      "@app/transformers": [
+        "src/app/transformers/index.ts"
       ]
     }
   },

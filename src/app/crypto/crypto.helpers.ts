@@ -1,4 +1,4 @@
-﻿import { Base64, EncryptedNode } from '@app/models';
+﻿import { Base64 } from '@app/models';
 
 // Content encryption (payload): AES-256-GCM
 const CONTENT_DEK_BYTES = 32;
@@ -15,7 +15,7 @@ const USER_DERIVED_KEY_BITS = 256;
 const PBKDF2_ITERATIONS = 310_000;
 
 
-export const bytesToBase64 = (bytes: Uint8Array): string => {
+export const bytesToBase64 = (bytes: Uint8Array): Base64 => {
   let binary = '';
 
   for (let i = 0; i < bytes.length; i++) {
@@ -25,7 +25,7 @@ export const bytesToBase64 = (bytes: Uint8Array): string => {
   return btoa(binary);
 }
 
-export const base64ToBytes = (base64: string): Uint8Array => {
+export const base64ToBytes = (base64: Base64): Uint8Array => {
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
 
@@ -57,7 +57,6 @@ export const randomBytes = (n: number): Uint8Array => {
 }
 
 export const bytesToArrayBuffer = (u8: Uint8Array): ArrayBuffer => {
-  // Copy into a real ArrayBuffer
   return u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength) as ArrayBuffer;
 }
 
@@ -77,7 +76,6 @@ export const aesGcmEncrypt = async (
 ): Promise<{ nonce: Base64; ct: Base64 }> => {
   const ivBytes = randomBytes(nonceBytes);
 
-  // TS-friendly: iv as ArrayBuffer
   const ct = await crypto.subtle.encrypt(
     { name: 'AES-GCM', iv: bytesToArrayBuffer(ivBytes) },
     key,
